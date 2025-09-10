@@ -26,6 +26,10 @@ const ttsSchema = z.object({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok" });
+  });
+  
   // Get chat messages
   app.get("/api/messages", async (req, res) => {
     try {

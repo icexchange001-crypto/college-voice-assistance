@@ -1,0 +1,17 @@
+name: Keep Render Server Warm
+
+on:
+  schedule:
+    # Runs every 5 minutes (you can adjust if you want)
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # Allows you to run it manually from GitHub Actions tab
+
+jobs:
+  ping-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Render Server Health Route
+        run: |
+          echo "Pinging health route..."
+          curl -s -o /dev/null -w "%{http_code}" https://college-voice-assistance.onrender.com/api/health
