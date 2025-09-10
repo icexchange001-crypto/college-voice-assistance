@@ -51,7 +51,7 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
       try {
         const voiceId = options.voiceId || VOICES.english;
 
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/tts`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/tts`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

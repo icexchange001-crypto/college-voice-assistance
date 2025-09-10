@@ -9,12 +9,26 @@ import { setupVite, serveStatic, log } from "./vite";
 const app = express();
 
 // Add CORS middleware to allow cross-origin requests
+const allowedOrigins = [
+  'http://silver-coyote-528857.hostingersite.com',
+  'https://silver-coyote-528857.hostingersite.com',
+  'http://localhost:5000',
+  'http://localhost:3000',
+  // Add any other domains you want to allow
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [])
+];
+
 app.use(cors({
-  origin: [
-    'http://silver-coyote-528857.hostingersite.com',
-    'http://localhost:5000',
-    'http://localhost:3000'
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
