@@ -2,10 +2,24 @@ import { config } from 'dotenv';
 import path from 'path';
 config({ path: path.resolve(process.cwd(), '.env'), override: true });
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Add CORS middleware to allow cross-origin requests
+app.use(cors({
+  origin: [
+    'http://silver-coyote-528857.hostingersite.com',
+    'http://localhost:5000',
+    'http://localhost:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

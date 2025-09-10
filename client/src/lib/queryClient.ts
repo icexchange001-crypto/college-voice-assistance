@@ -16,7 +16,7 @@ export async function apiRequest(
 ): Promise<Response> {
   // Add base URL if the url is relative
   const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
-  
+
   const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -37,7 +37,7 @@ export const getQueryFn: <T>(options: {
     // Build the full URL
     const urlPath = queryKey.join("/") as string;
     const fullUrl = urlPath.startsWith('http') ? urlPath : `${API_BASE_URL}${urlPath}`;
-    
+
     const res = await fetch(fullUrl, {
       credentials: "include",
     });

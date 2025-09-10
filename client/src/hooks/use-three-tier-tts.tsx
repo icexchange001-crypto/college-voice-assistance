@@ -36,11 +36,11 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
 
   const speak = useCallback(async (text: string, options: TTSOptions = {}) => {
     console.log('TTS: Starting three-tier speech for:', text.substring(0, 50));
-    
+
     // Three-tier system: Cartesia -> ElevenLabs -> Browser Speech API
     try {
       setIsLoading(true);
-      
+
       // Stop any current audio
       if (currentAudio) {
         currentAudio.pause();
@@ -51,7 +51,7 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
       try {
         const voiceId = options.voiceId || VOICES.english;
 
-        const response = await fetch('/api/tts', {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/tts`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -75,13 +75,13 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
           const audioBlob = await response.blob();
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
-          
+
           const provider = response.headers.get('X-TTS-Provider') || 'unknown';
-          
+
           setCurrentAudio(audio);
           setIsLoading(false);
           setIsSpeaking(true);
-          
+
           console.log(`TTS: ${provider} audio ready, playing...`);
 
           audio.onplay = () => {
@@ -110,7 +110,7 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
           return; // Success with API provider
         } else {
           const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-          
+
           // Check if we should fallback to browser
           if (errorData.fallbackToBrowser) {
             console.log('TTS: API providers unavailable, using browser fallback');
@@ -125,13 +125,13 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
       // Fallback to Web Speech API with female voice
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        
+
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 0.9;
         utterance.pitch = 1.2; // Higher pitch for more feminine sound
         utterance.volume = 1.0;
         utterance.lang = 'en-US';
-        
+
         // Try to get a female voice
         const voices = speechSynthesis.getVoices();
         const femaleVoice = voices.find(voice => 
@@ -141,14 +141,14 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
           voice.name.toLowerCase().includes('samantha') ||
           voice.name.toLowerCase().includes('karen')
         );
-        
+
         if (femaleVoice) {
           utterance.voice = femaleVoice;
         }
-        
+
         setIsLoading(false);
         setIsSpeaking(true);
-        
+
         utterance.onstart = () => {
           console.log('TTS: Web Speech API started speaking');
           options.onStart?.();
@@ -158,17 +158,17 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
           setIsSpeaking(false);
           options.onEnd?.();
         };
-        
+
         utterance.onerror = (event) => {
           setIsSpeaking(false);
           setIsLoading(false);
           options.onError?.(`Speech failed: ${event.error}`);
         };
-        
+
         speechSynthesis.speak(utterance);
         return;
       }
-      
+
       throw new Error('No speech synthesis available');
 
     } catch (error) {
