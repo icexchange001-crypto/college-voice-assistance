@@ -1,0 +1,270 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKSD College Voice Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rksd-blue': '#1E40AF',
+                        'rksd-light': '#3B82F6',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- @COMPONENT: Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-rksd-blue rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">RKSD College Assistant</h1>
+                        <p class="text-sm text-gray-600">Real-time voice & text support</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <div class="w-1.5 h-1.5 bg-green-400 rounded-full mr-1.5 animate-pulse"></div>
+                        Online
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <main class="max-w-4xl mx-auto px-4 py-6">
+        <!-- @COMPONENT: VoiceStatusBar -->
+        <div class="mb-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-rksd-light rounded-full flex items-center justify-center">
+                            <i class="fas fa-volume-up text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900" data-bind="voiceStatus">Voice Assistant Ready</p>
+                            <p class="text-xs text-gray-500">Hindi & English supported</p>
+                        </div>
+                    </div>
+                    <button class="inline-flex items-center px-4 py-2 bg-rksd-blue text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium text-sm" data-event="click:toggleSpeakMode" data-implementation="Toggle speak/mute functionality">
+                        <i class="fas fa-play mr-2"></i>
+                        <span data-bind="speakButtonText">Speak</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: VoiceStatusBar -->
+
+        <!-- @COMPONENT: ChatContainer -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
+            <div class="p-4 border-b border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-900">Chat History</h2>
+                <p class="text-sm text-gray-600">Ask me about college information, events, contacts, and more</p>
+            </div>
+            
+            <!-- @COMPONENT: ChatMessages -->
+            <div class="h-96 overflow-y-auto p-4 space-y-4" data-implementation="Scrollable chat history container">
+                <!-- Welcome Message -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-rksd-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 rounded-lg rounded-tl-none p-3 max-w-md">
+                            <p class="text-sm text-gray-900" data-mock="true">Hello! I'm your RKSD College assistant. Ask me about admissions, departments, events, hostel timings, or any other college information. You can speak or type your questions.</p>
+                        </div>
+                        <div class="flex items-center mt-2 space-x-2">
+                            <span class="text-xs text-gray-500">9:30 AM</span>
+                            <button class="text-gray-400 hover:text-rksd-blue transition-colors" data-event="click:playResponse" data-implementation="Play TTS for this message">
+                                <i class="fas fa-play text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample User Message -->
+                <div class="flex items-start space-x-3 justify-end" data-mock="true">
+                    <div class="flex-1 flex justify-end">
+                        <div class="bg-rksd-blue rounded-lg rounded-tr-none p-3 max-w-md">
+                            <p class="text-sm text-white">Hostel ka timing kya hai?</p>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-user text-gray-600 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Sample Assistant Response -->
+                <div class="flex items-start space-x-3" data-mock="true">
+                    <div class="w-8 h-8 bg-rksd-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 rounded-lg rounded-tl-none p-3 max-w-md">
+                            <p class="text-sm text-gray-900">RKSD College hostel timing रात 10 बजे तक है। Boys hostel 10:00 PM तक और girls hostel 9:30 PM तक है। Late entry के लिए prior permission चाहिए warden से।</p>
+                        </div>
+                        <div class="flex items-center mt-2 space-x-2">
+                            <span class="text-xs text-gray-500">9:31 AM</span>
+                            <button class="text-gray-400 hover:text-rksd-blue transition-colors" data-event="click:playResponse" data-implementation="Play TTS for this message">
+                                <i class="fas fa-play text-xs"></i>
+                            </button>
+                            <span class="text-xs text-green-600 flex items-center">
+                                <i class="fas fa-volume-up mr-1"></i>
+                                Playing
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @MAP: chatMessages.map(message => ( -->
+                <!-- Additional messages will be dynamically inserted here -->
+                <!-- @END_MAP )) -->
+            </div>
+            <!-- @END_COMPONENT: ChatMessages -->
+        </div>
+        <!-- @END_COMPONENT: ChatContainer -->
+
+        <!-- @COMPONENT: InputArea -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+            <div class="space-y-4">
+                <!-- Voice Input Section -->
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center relative">
+                            <i class="fas fa-microphone text-white"></i>
+                            <!-- @STATE: isListening:boolean = false -->
+                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white" data-bind="listeningIndicator" style="display: none;"></div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900" data-bind="voiceInputStatus">Ready to listen</p>
+                            <p class="text-xs text-gray-500">Click microphone and speak your question</p>
+                        </div>
+                    </div>
+                    <button class="inline-flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 font-medium text-sm" data-event="click:startVoiceInput" data-implementation="Start/stop voice recording">
+                        <i class="fas fa-microphone mr-2"></i>
+                        <span data-bind="micButtonText">Start Listening</span>
+                    </button>
+                </div>
+
+                <!-- Text Input Section -->
+                <div class="relative">
+                    <textarea 
+                        class="w-full resize-none border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-rksd-blue focus:border-rksd-blue transition-colors text-sm"
+                        placeholder="Type your question here... (Hindi और English both supported)"
+                        rows="3"
+                        data-bind="textInput"
+                        data-mock="true"
+                    ></textarea>
+                    <button class="absolute bottom-3 right-3 inline-flex items-center justify-center w-8 h-8 bg-rksd-blue text-white rounded-lg hover:bg-blue-700 transition-colors duration-200" data-event="click:sendMessage" data-implementation="Send text message">
+                        <i class="fas fa-paper-plane text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm" data-event="click:quickQuery" data-implementation="Send predefined query">
+                        <i class="fas fa-clock mr-1.5 text-xs"></i>
+                        College Timings
+                    </button>
+                    <button class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm" data-event="click:quickQuery" data-implementation="Send predefined query">
+                        <i class="fas fa-phone mr-1.5 text-xs"></i>
+                        Contact Info
+                    </button>
+                    <button class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm" data-event="click:quickQuery" data-implementation="Send predefined query">
+                        <i class="fas fa-calendar mr-1.5 text-xs"></i>
+                        Events
+                    </button>
+                    <button class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm" data-event="click:quickQuery" data-implementation="Send predefined query">
+                        <i class="fas fa-building mr-1.5 text-xs"></i>
+                        Departments
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: InputArea -->
+
+        <!-- @COMPONENT: StatusIndicators -->
+        <div class="mt-4 flex items-center justify-between text-xs text-gray-500">
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center">
+                    <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                    Connected to Groq AI
+                </span>
+                <span class="flex items-center">
+                    <i class="fas fa-language mr-2"></i>
+                    हिंदी & English
+                </span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span data-bind="responseTime" data-mock="true">~1.2s response</span>
+                <span>•</span>
+                <span data-bind="messageCount" data-mock="true">3 messages</span>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: StatusIndicators -->
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;" data-bind="loadingOverlay" data-implementation="Show during API calls">
+        <div class="bg-white rounded-xl p-6 max-w-sm mx-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 border-4 border-rksd-blue border-t-transparent rounded-full animate-spin"></div>
+                <div>
+                    <p class="font-medium text-gray-900">Processing...</p>
+                    <p class="text-sm text-gray-600" data-bind="loadingMessage">Getting response from AI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (function() {
+            // Voice functionality placeholders
+            let isListening = false;
+            let isSpeaking = false;
+            
+            // Mock state management for demo purposes
+            function updateVoiceStatus(status) {
+                // TODO: Update voice status indicators
+                console.log('Voice status:', status);
+            }
+            
+            function toggleSpeakMode() {
+                // TODO: Implement speak/mute toggle
+                isSpeaking = !isSpeaking;
+                updateVoiceStatus(isSpeaking ? 'speaking' : 'ready');
+            }
+            
+            function startVoiceInput() {
+                // TODO: Implement Web Speech API
+                isListening = !isListening;
+                console.log('Voice input:', isListening ? 'started' : 'stopped');
+            }
+            
+            function sendMessage() {
+                // TODO: Send message to backend API
+                console.log('Sending message...');
+            }
+            
+            // Initialize app
+            console.log('RKSD College Voice Assistant initialized');
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+use-elevenlabs.tsx:31 TTS: Starting ElevenLabs speech for: Namaste! Welcome to RKSD College. How can I assist
+use-elevenlabs.tsx:47  POST https://53f3799f-96c2-468e-8e6e-85cdb16b8adf-00-dcabk3z9dtcp.pike.replit.dev/api/tts 500 (Internal Server Error)
+(anonymous) @ use-elevenlabs.tsx:47
+onSuccess @ home.tsx:65
+execute @ @tanstack_react-query.js?v=cc00555c:1233
+await in execute
+mutate @ @tanstack_react-query.js?v=cc00555c:2630
+(anonymous) @ @tanstack_react-query.js?v=cc00555c:3295
+(anonymous) @ home.tsx:90
+(anonymous) @ home.tsx:147
+(anonymous) @ home.tsx:154
+callCallback2 @ chunk-WERSD76P.js?v=cc00555c:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=cc00555c:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=cc00555c:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=cc00555c:3736
+executeDispatch @ chunk-WERSD76P.js?v=cc00555c:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=cc00555c:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=cc00555c:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=cc00555c:7051
+(anonymous) @ chunk-WERSD76P.js?v=cc00555c:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=cc00555c:18913
+batchedUpdates @ chunk-WERSD76P.js?v=cc00555c:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=cc00555c:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=cc00555c:5478
+dispatchEvent @ chunk-WERSD76P.js?v=cc00555c:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=cc00555c:5449Understand this error
+use-elevenlabs.tsx:94 All TTS methods failed: Error: ElevenLabs API error: Internal Server Error
+    at use-elevenlabs.tsx:62:15
+(anonymous) @ use-elevenlabs.tsx:94
+await in (anonymous)
+onSuccess @ home.tsx:65
+execute @ @tanstack_react-query.js?v=cc00555c:1233
+await in execute
+mutate @ @tanstack_react-query.js?v=cc00555c:2630
+(anonymous) @ @tanstack_react-query.js?v=cc00555c:3295
+(anonymous) @ home.tsx:90
+(anonymous) @ home.tsx:147
+(anonymous) @ home.tsx:154
+callCallback2 @ chunk-WERSD76P.js?v=cc00555c:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=cc00555c:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=cc00555c:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=cc00555c:3736
+executeDispatch @ chunk-WERSD76P.js?v=cc00555c:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=cc00555c:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=cc00555c:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=cc00555c:7051
+(anonymous) @ chunk-WERSD76P.js?v=cc00555c:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=cc00555c:18913
+batchedUpdates @ chunk-WERSD76P.js?v=cc00555c:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=cc00555c:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=cc00555c:5478
+dispatchEvent @ chunk-WERSD76P.js?v=cc00555c:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=cc00555c:5449Understand this error
+home.tsx:67 Speech failed: ElevenLabs API error: Internal Server Error

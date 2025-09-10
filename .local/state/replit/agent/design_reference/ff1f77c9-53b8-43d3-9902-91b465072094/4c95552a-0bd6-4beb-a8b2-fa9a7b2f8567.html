@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Voice Assistant - Real-time AI Helper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1976D2',
+                        secondary: '#FFC107',
+                        success: '#4CAF50',
+                        surface: '#FFFFFF',
+                        'text-primary': '#212121',
+                        'text-secondary': '#757575',
+                    },
+                    animation: {
+                        'pulse-gentle': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounce 1s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+        }
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+        }
+        .chat-bubble-assistant {
+            background: #F5F5F5;
+            border: 1px solid #E0E0E0;
+        }
+        .recording-pulse {
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            animation: recording-pulse 1.5s infinite;
+        }
+        @keyframes recording-pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- @COMPONENT: Header [Navigation and language selector] -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-semibold">College Voice Assistant</h1>
+                        <p class="text-blue-100 text-sm">AI-powered helper for students</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <div class="flex items-center space-x-2 bg-white bg-opacity-10 rounded-lg px-3 py-2">
+                        <i class="fas fa-language text-sm"></i>
+                        <select class="bg-transparent text-white text-sm border-none outline-none">
+                            <option value="en-hi" class="text-gray-800">English + हिंदी</option>
+                            <option value="en" class="text-gray-800">English</option>
+                            <option value="hi" class="text-gray-800">हिंदी</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Admin Panel Toggle -->
+                    <button class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg px-3 py-2 transition-all" data-event="click:toggleAdminPanel">
+                        <i class="fas fa-cog text-sm"></i>
+                        <span class="ml-1 text-sm hidden sm:inline">Admin</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <div class="container mx-auto px-4 py-6 max-w-4xl">
+        <!-- @STATE: activeTab:string = 'chat' -->
+        <!-- @STATE: isRecording:boolean = false -->
+        <!-- @STATE: isProcessing:boolean = false -->
+        
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-lg shadow-sm mb-6 p-1">
+            <div class="flex space-x-1">
+                <button class="flex-1 py-3 px-4 rounded-md text-center font-medium transition-all bg-primary text-white" data-bind="activeTab === 'chat'">
+                    <i class="fas fa-comments mr-2"></i>
+                    Chat Assistant
+                </button>
+                <button class="flex-1 py-3 px-4 rounded-md text-center font-medium transition-all text-gray-600 hover:bg-gray-50" data-bind="activeTab === 'admin'">
+                    <i class="fas fa-database mr-2"></i>
+                    Admin Panel
+                </button>
+            </div>
+        </div>
+
+        <!-- @COMPONENT: ChatInterface [Main chat functionality] -->
+        <div class="chat-interface" data-bind="activeTab === 'chat'">
+            <!-- Welcome Card -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Welcome to College Voice Assistant!</h2>
+                    <p class="text-gray-600 mb-4">Ask me anything about college - departments, timings, events, contacts, and more. You can speak or type your questions.</p>
+                    
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+                        <button class="p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all text-center" data-event="click:sendQuickQuery" data-query="hostel timing">
+                            <i class="fas fa-bed text-primary text-lg mb-1"></i>
+                            <p class="text-xs font-medium text-gray-700">Hostel Info</p>
+                        </button>
+                        <button class="p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-all text-center" data-event="click:sendQuickQuery" data-query="library hours">
+                            <i class="fas fa-book text-green-600 text-lg mb-1"></i>
+                            <p class="text-xs font-medium text-gray-700">Library</p>
+                        </button>
+                        <button class="p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-all text-center" data-event="click:sendQuickQuery" data-query="upcoming events">
+                            <i class="fas fa-calendar text-yellow-600 text-lg mb-1"></i>
+                            <p class="text-xs font-medium text-gray-700">Events</p>
+                        </button>
+                        <button class="p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all text-center" data-event="click:sendQuickQuery" data-query="contact information">
+                            <i class="fas fa-phone text-purple-600 text-lg mb-1"></i>
+                            <p class="text-xs font-medium text-gray-700">Contacts</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages Container -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 min-h-96">
+                <!-- Chat Header -->
+                <div class="border-b border-gray-100 p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+                                <i class="fas fa-circle text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">AI Assistant</h3>
+                                <p class="text-xs text-gray-500">Online • Powered by Groq AI</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600 transition-colors" data-event="click:clearChat">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages Area -->
+                <div class="p-4 space-y-4 max-h-96 overflow-y-auto" id="messagesContainer">
+                    <!-- @MAP: messages.map(message => ( -->
+                    
+                    <!-- Sample User Message -->
+                    <div class="flex justify-end">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="chat-bubble-user text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
+                                <p class="text-sm" data-bind="message.text">Hostel ka timing kya hai?</p>
+                            </div>
+                            <div class="flex items-center justify-end mt-1 space-x-2">
+                                <span class="text-xs text-gray-500" data-bind="message.timestamp">2:30 PM</span>
+                                <i class="fas fa-check-double text-primary text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Assistant Message -->
+                    <div class="flex justify-start">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="chat-bubble-assistant rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                                <p class="text-sm text-gray-800" data-bind="message.text">College hostel का timing रात 10 बजे तक है। Students को 10 PM से पहले hostel वापस आना होता है। Emergency के लिए night pass भी available है जो warden से मिल सकता है।</p>
+                            </div>
+                            <div class="flex items-center mt-1 space-x-2">
+                                <span class="text-xs text-gray-500" data-bind="message.timestamp">2:30 PM</span>
+                                <button class="text-gray-400 hover:text-primary transition-colors" data-event="click:playAudio" data-implementation="Play TTS audio for this message">
+                                    <i class="fas fa-volume-up text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- @END_MAP )) -->
+                </div>
+
+                <!-- Typing Indicator (shown when processing) -->
+                <div class="px-4 pb-2" data-bind="isProcessing" style="display: none;">
+                    <div class="flex justify-start">
+                        <div class="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-3">
+                            <div class="flex space-x-1">
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="border-t border-gray-100 p-4">
+                    <div class="flex items-end space-x-3">
+                        <!-- Voice Input Button -->
+                        <button class="flex-shrink-0 w-12 h-12 bg-primary hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-all shadow-lg recording-pulse" 
+                                data-bind="isRecording" 
+                                data-event="click:toggleRecording"
+                                data-implementation="Toggle speech recognition">
+                            <i class="fas fa-microphone text-lg" data-bind="!isRecording"></i>
+                            <i class="fas fa-stop text-lg" data-bind="isRecording" style="display: none;"></i>
+                        </button>
+
+                        <!-- Text Input Area -->
+                        <div class="flex-1 relative">
+                            <textarea 
+                                class="w-full resize-none rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 px-4 py-3 pr-12 min-h-12 max-h-32 outline-none transition-all"
+                                placeholder="Type your question or click the mic to speak..."
+                                data-event="input:handleTextInput"
+                                data-bind="textInput"></textarea>
+                            
+                            <!-- Send Button -->
+                            <button class="absolute right-2 bottom-2 w-8 h-8 bg-primary hover:bg-blue-700 text-white rounded-lg flex items-center justify-center transition-all"
+                                    data-event="click:sendMessage"
+                                    data-implementation="Send text message to AI">
+                                <i class="fas fa-paper-plane text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Recording Status -->
+                    <div class="mt-2 text-center" data-bind="isRecording" style="display: none;">
+                        <div class="inline-flex items-center space-x-2 text-success text-sm">
+                            <div class="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                            <span>Listening... Speak your question</span>
+                        </div>
+                    </div>
+
+                    <!-- Language Detection Status -->
+                    <div class="mt-2 text-center text-xs text-gray-500">
+                        <span>🎙️ Voice recognition active • 🌐 Auto-detect Hindi/English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ChatInterface -->
+
+        <!-- @COMPONENT: AdminPanel [CRUD operations for college data] -->
+        <div class="admin-panel" data-bind="activeTab === 'admin'" style="display: none;">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <!-- Admin Header -->
+                <div class="border-b border-gray-100 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-800">College Data Management</h2>
+                            <p class="text-gray-600 mt-1">Manage college information, contacts, events, and notices</p>
+                        </div>
+                        <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all flex items-center space-x-2"
+                                data-event="click:addNewRecord">
+                            <i class="fas fa-plus"></i>
+                            <span>Add New</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Tabs -->
+                <div class="border-b border-gray-100">
+                    <div class="flex space-x-1 p-1 mx-6 my-4 bg-gray-50 rounded-lg">
+                        <button class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all bg-white shadow-sm text-primary">
+                            Departments
+                        </button>
+                        <button class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-gray-600 hover:bg-white">
+                            Contacts
+                        </button>
+                        <button class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-gray-600 hover:bg-white">
+                            Events
+                        </button>
+                        <button class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-gray-600 hover:bg-white">
+                            Notices
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 px-4 font-medium text-gray-700">Name</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-700">Description</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-700">Contact</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                                    <th class="text-right py-3 px-4 font-medium text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- @MAP: collegeData.departments.map(dept => ( -->
+                                <tr class="border-b border-gray-100 hover:bg-gray-50" data-mock="true">
+                                    <td class="py-3 px-4">
+                                        <div class="font-medium text-gray-800">Computer Science</div>
+                                        <div class="text-sm text-gray-500">CS & IT Department</div>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Engineering programs and research in computing technologies</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">cs@college.edu</td>
+                                    <td class="py-3 px-4">
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-right">
+                                        <div class="flex items-center justify-end space-x-2">
+                                            <button class="text-primary hover:text-blue-700 text-sm" data-event="click:editRecord">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-500 hover:text-red-700 text-sm" data-event="click:deleteRecord">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="border-b border-gray-100 hover:bg-gray-50" data-mock="true">
+                                    <td class="py-3 px-4">
+                                        <div class="font-medium text-gray-800">Mechanical Engineering</div>
+                                        <div class="text-sm text-gray-500">Mechanical Dept</div>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Core engineering with focus on manufacturing and design</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">mech@college.edu</td>
+                                    <td class="py-3 px-4">
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-right">
+                                        <div class="flex items-center justify-end space-x-2">
+                                            <button class="text-primary hover:text-blue-700 text-sm" data-event="click:editRecord">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-500 hover:text-red-700 text-sm" data-event="click:deleteRecord">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="border-b border-gray-100 hover:bg-gray-50" data-mock="true">
+                                    <td class="py-3 px-4">
+                                        <div class="font-medium text-gray-800">Library Services</div>
+                                        <div class="text-sm text-gray-500">Central Library</div>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Digital and physical library resources for students</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">library@college.edu</td>
+                                    <td class="py-3 px-4">
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-right">
+                                        <div class="flex items-center justify-end space-x-2">
+                                            <button class="text-primary hover:text-blue-700 text-sm" data-event="click:editRecord">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-500 hover:text-red-700 text-sm" data-event="click:deleteRecord">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- @END_MAP )) -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">12</span> results
+                        </div>
+                        <div class="flex space-x-1">
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-all">Previous</button>
+                            <button class="px-3 py-2 text-sm bg-primary text-white rounded-md">1</button>
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-all">2</button>
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-all">3</button>
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-all">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Data Viewer -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 mt-6">
+                <div class="border-b border-gray-100 p-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800">Raw JSON Data</h3>
+                        <div class="flex space-x-2">
+                            <button class="text-sm text-primary hover:text-blue-700 transition-colors" data-event="click:exportJSON">
+                                <i class="fas fa-download mr-1"></i>
+                                Export
+                            </button>
+                            <button class="text-sm text-primary hover:text-blue-700 transition-colors" data-event="click:importJSON">
+                                <i class="fas fa-upload mr-1"></i>
+                                Import
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <pre class="bg-gray-50 rounded-lg p-4 text-sm overflow-x-auto" data-mock="true"><code>{
+  "departments": [
+    {
+      "id": "cs",
+      "name": "Computer Science",
+      "description": "Engineering programs and research in computing technologies",
+      "contact": "cs@college.edu",
+      "timing": "9 AM - 5 PM",
+      "location": "Block A, Floor 2"
+    }
+  ],
+  "events": [
+    {
+      "id": "tech-fest",
+      "name": "Annual Tech Fest",
+      "date": "2024-03-15",
+      "description": "Technical event showcasing student projects"
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AdminPanel -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="text-center text-gray-600 text-sm">
+                <p>© 2024 College Voice Assistant. Powered by Groq AI • Built with React & Node.js</p>
+                <div class="mt-2 flex items-center justify-center space-x-4">
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-microphone text-success"></i>
+                        <span>Web Speech API</span>
+                    </span>
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-volume-up text-primary"></i>
+                        <span>Speech Synthesis</span>
+                    </span>
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-language text-secondary"></i>
+                        <span>Hindi + English</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (function() {
+            'use strict';
+            
+            // Application state
+            let appState = {
+                activeTab: 'chat',
+                isRecording: false,
+                isProcessing: false,
+                messages: [],
+                currentLanguage: 'en-hi'
+            };
+
+            // Initialize speech recognition (placeholder)
+            let recognition = null;
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+            }
+
+            // Initialize speech synthesis (placeholder)
+            const synth = window.speechSynthesis;
+
+            // DOM manipulation helpers
+            function updateUI() {
+                // Update tab visibility
+                document.querySelector('.chat-interface').style.display = 
+                    appState.activeTab === 'chat' ? 'block' : 'none';
+                document.querySelector('.admin-panel').style.display = 
+                    appState.activeTab === 'admin' ? 'block' : 'none';
+
+                // Update recording state
+                const micButton = document.querySelector('[data-event="click:toggleRecording"]');
+                if (appState.isRecording) {
+                    micButton.classList.add('recording-pulse', 'bg-success');
+                    micButton.classList.remove('bg-primary');
+                } else {
+                    micButton.classList.remove('recording-pulse', 'bg-success');
+                    micButton.classList.add('bg-primary');
+                }
+
+                // Update processing state
+                const typingIndicator = document.querySelector('[data-bind="isProcessing"]');
+                if (typingIndicator) {
+                    typingIndicator.style.display = appState.isProcessing ? 'block' : 'none';
+                }
+            }
+
+            // Event handlers
+            function handleTabSwitch(tabName) {
+                appState.activeTab = tabName;
+                updateUI();
+            }
+
+            function handleVoiceRecording() {
+                if (!recognition) {
+                    alert('Speech recognition not supported in this browser. Please use Chrome.');
+                    return;
+                }
+
+                if (appState.isRecording) {
+                    recognition.stop();
+                    appState.isRecording = false;
+                } else {
+                    recognition.start();
+                    appState.isRecording = true;
+                }
+                updateUI();
+            }
+
+            function handleSendMessage() {
+                const textInput = document.querySelector('textarea');
+                const message = textInput.value.trim();
+                if (message) {
+                    // Add message to chat (placeholder)
+                    console.log('Sending message:', message);
+                    textInput.value = '';
+                    appState.isProcessing = true;
+                    updateUI();
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        appState.isProcessing = false;
+                        updateUI();
+                    }, 2000);
+                }
+            }
+
+            // Event listeners
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-event="click:toggleRecording"]')) {
+                    handleVoiceRecording();
+                } else if (e.target.closest('[data-event="click:sendMessage"]')) {
+                    handleSendMessage();
+                } else if (e.target.closest('[data-event="click:toggleAdminPanel"]')) {
+                    handleTabSwitch(appState.activeTab === 'chat' ? 'admin' : 'chat');
+                }
+            });
+
+            // Initialize app
+            updateUI();
+        })();
+    </script>
+</body>
+</html>

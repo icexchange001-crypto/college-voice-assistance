@@ -1,0 +1,100 @@
+Title: Real-Time College Voice Assistant (Text + Voice, Hindi & English)
+
+Objective:
+Ek web-based voice assistant banao jo college-related queries ka real-time jawab de voice + text dono format me. Iska interface clean ho, professional lagge aur hosting-friendly (Vercel + Render ready) ho.
+
+Key Features:
+
+Voice + Text Support:
+
+User voice se question puch sake (Speech-to-Text).
+
+Assistant voice + text dono me jawab de (Text-to-Speech + on-screen text).
+
+Hindi & English bilingual support.
+
+Data Handling:
+
+Assistant ke paas college-related data ho (department info, contacts, notices, events, etc.).
+
+Data JSON file me store ho initially (college.json).
+
+Admin Panel for CRUD (add/update/delete info dynamically).
+
+AI Response System:
+
+Groq API use karo for natural conversational responses.
+
+Model: llama3-8b-8192 (or best available on Groq).
+
+Assistant ko college.json ka context har query ke sath bhejna.
+
+Free STT & TTS:
+
+Speech Recognition: Web Speech API (Chrome recommended).
+
+Text-to-Speech: Browser SpeechSynthesis with en-US & hi-IN voices.
+
+Frontend (React + Tailwind):
+
+Simple clean UI:
+
+Mic button (for voice input).
+
+Text input (fallback).
+
+Chat history (user & assistant messages).
+
+Audio icon to replay assistant voice.
+
+Responsive (desktop + mobile).
+
+Backend (Node + Express):
+
+Endpoint /ask jo Groq ko request kare aur response de.
+
+Secure API key using .env.
+
+Serve static JSON data for college details.
+
+Deployment Ready:
+
+Frontend → Vercel
+
+Backend → Render
+
+Configurable API base URL via .env.
+
+Technical Requirements:
+
+Frontend: React (Vite) + TailwindCSS
+
+Backend: Node.js + Express
+
+Database: Initially JSON (college.json), later scalable to MongoDB.
+
+Voice APIs: Web Speech API (STT) & SpeechSynthesis (TTS)
+
+Language Support: Hindi + English auto-detect
+
+Hosting: Vercel (frontend) + Render/Heroku (backend)
+
+Flow:
+
+User clicks mic → Speaks query → STT converts to text → Sends to backend with context → Groq processes → Returns text → TTS speaks answer → Both question & answer show in chat UI.
+
+Example Query:
+
+"Hostel ka timing kya hai?"
+
+Assistant: "Hostel timing raat 10 baje tak hai." (Voice + Text).
+
+✅ Extra Instructions for AI:
+
+Code production-ready ho.
+
+Include .env.example file.
+
+Add instructions in README for local setup & deployment.
+
+Use modular structure for scalability.

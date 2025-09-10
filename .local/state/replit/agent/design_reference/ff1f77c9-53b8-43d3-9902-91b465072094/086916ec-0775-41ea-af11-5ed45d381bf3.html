@@ -1,0 +1,403 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKSD College Voice Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounce 1s infinite',
+                        'scale-pulse': 'scale-pulse 2s ease-in-out infinite',
+                        'gradient-shift': 'gradient-shift 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'scale-pulse': {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' },
+                        },
+                        'gradient-shift': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        
+        .avatar-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 8s ease infinite;
+        }
+        
+        .chat-bubble-user {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .chat-bubble-assistant {
+            background: rgba(103, 126, 234, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .recording-pulse {
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        
+        .recording-pulse:hover {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .eye-blink {
+            animation: blink 3s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { height: 8px; }
+            95% { height: 2px; }
+        }
+    </style>
+</head>
+<body class="font-inter min-h-screen gradient-bg overflow-hidden">
+    <!-- @COMPONENT: VoiceAssistantApp -->
+    <div class="min-h-screen flex flex-col relative">
+        
+        <!-- Status Bar -->
+        <div class="flex justify-between items-center p-4 text-white text-sm font-medium">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <div class="w-4 h-2 bg-white rounded-sm opacity-80"></div>
+                <div class="w-6 h-3 bg-white rounded-sm opacity-60"></div>
+                <div class="w-6 h-4 bg-white rounded-sm"></div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col px-6 pb-6">
+            
+            <!-- Greeting Header -->
+            <!-- @COMPONENT: GreetingHeader -->
+            <div class="text-center mb-8 mt-4">
+                <div class="glass-effect rounded-2xl p-6 mx-4">
+                    <h1 class="text-white text-lg font-semibold mb-2" data-bind="greeting.message">Hello! Mary</h1>
+                    <p class="text-white/80 text-sm" data-bind="greeting.subtitle">How can I help you with RKSD College today?</p>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: GreetingHeader -->
+
+            <!-- Voice Assistant Avatar -->
+            <!-- @COMPONENT: VoiceAvatar [isListening, isSpeaking, isIdle] -->
+            <div class="flex-1 flex items-center justify-center mb-8">
+                <div class="relative">
+                    <!-- Outer glow ring -->
+                    <div class="absolute inset-0 avatar-gradient rounded-full opacity-30 scale-110 animate-pulse-slow"></div>
+                    
+                    <!-- Main avatar -->
+                    <div class="relative w-32 h-32 avatar-gradient rounded-full flex items-center justify-center shadow-2xl" data-state="isIdle">
+                        <!-- Eyes -->
+                        <div class="flex space-x-4">
+                            <div class="w-2 h-2 bg-white rounded-full eye-blink opacity-90"></div>
+                            <div class="w-2 h-2 bg-white rounded-full eye-blink opacity-90"></div>
+                        </div>
+                        
+                        <!-- Voice visualization waves (hidden by default) -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0" data-show-when="isSpeaking">
+                            <div class="flex space-x-1">
+                                <div class="w-1 h-4 bg-white rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+                                <div class="w-1 h-6 bg-white rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+                                <div class="w-1 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+                                <div class="w-1 h-5 bg-white rounded-full animate-bounce" style="animation-delay: 450ms;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: VoiceAvatar -->
+
+            <!-- Quick Actions -->
+            <!-- @COMPONENT: QuickActions -->
+            <div class="mb-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="glass-effect rounded-xl p-4 text-white/90 text-sm font-medium hover:bg-white/20 transition-all duration-300 transform hover:scale-105" data-action="query:course_info">
+                        📚 Course Info
+                    </button>
+                    <button class="glass-effect rounded-xl p-4 text-white/90 text-sm font-medium hover:bg-white/20 transition-all duration-300 transform hover:scale-105" data-action="query:contact_details">
+                        📞 Contact Details
+                    </button>
+                    <button class="glass-effect rounded-xl p-4 text-white/90 text-sm font-medium hover:bg-white/20 transition-all duration-300 transform hover:scale-105" data-action="query:hostel_timing">
+                        🏠 Hostel Timing
+                    </button>
+                    <button class="glass-effect rounded-xl p-4 text-white/90 text-sm font-medium hover:bg-white/20 transition-all duration-300 transform hover:scale-105" data-action="query:events">
+                        🎯 Events & News
+                    </button>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: QuickActions -->
+
+            <!-- Chat Messages -->
+            <!-- @COMPONENT: ChatHistory [messages] -->
+            <div class="flex-1 mb-4 max-h-40 overflow-y-auto space-y-3" data-mock="true">
+                <!-- @MAP: messages.map(message => ( -->
+                
+                <!-- User Message Example -->
+                <div class="flex justify-end">
+                    <div class="chat-bubble-user rounded-2xl rounded-br-md px-4 py-3 max-w-xs">
+                        <p class="text-white text-sm" data-bind="message.text">Hostel ka timing kya hai?</p>
+                        <button class="mt-2 text-white/60 hover:text-white" data-action="replay_audio" data-mock="true">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6.114A4.369 4.369 0 005 11c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assistant Message Example -->
+                <div class="flex justify-start">
+                    <div class="chat-bubble-assistant rounded-2xl rounded-bl-md px-4 py-3 max-w-xs">
+                        <p class="text-white text-sm" data-bind="message.text">RKSD College hostel timing रात 10 बजे तक है। Students को इस time के अंदर hostel पहुंचना होता है।</p>
+                        <button class="mt-2 text-white/60 hover:text-white" data-action="replay_audio" data-implementation="Should trigger TTS for this message">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6.114A4.369 4.369 0 005 11c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- @END_MAP )) -->
+            </div>
+            <!-- @END_COMPONENT: ChatHistory -->
+
+        </div>
+
+        <!-- Bottom Input Area -->
+        <!-- @COMPONENT: InputArea [isListening, isProcessing] -->
+        <div class="p-6 pt-0">
+            <div class="glass-effect rounded-2xl p-4">
+                <div class="flex items-center space-x-4">
+                    
+                    <!-- Text Input -->
+                    <div class="flex-1">
+                        <input 
+                            type="text" 
+                            placeholder="Ask me anything about RKSD College..." 
+                            class="w-full bg-transparent text-white placeholder-white/60 text-sm outline-none"
+                            data-bind="inputText"
+                            data-implementation="Should support Hindi and English input"
+                        />
+                    </div>
+
+                    <!-- Voice Input Button -->
+                    <button 
+                        class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg"
+                        data-state="idle"
+                        data-event="click:toggleVoiceInput"
+                        data-implementation="Should handle Web Speech API integration"
+                    >
+                        <!-- Microphone Icon (default state) -->
+                        <svg class="w-5 h-5" data-show-when="idle" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+                        </svg>
+                        
+                        <!-- Stop Icon (recording state) -->
+                        <svg class="w-5 h-5 hidden" data-show-when="recording" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+
+                    <!-- Send Button -->
+                    <button 
+                        class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg"
+                        data-event="click:sendMessage"
+                        data-implementation="Should send text or voice input to backend"
+                    >
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Voice Status Indicator -->
+                <div class="mt-3 text-center">
+                    <span class="text-white/60 text-xs" data-bind="voiceStatus.text" data-mock="true">Tap microphone to speak</span>
+                    
+                    <!-- Loading Animation -->
+                    <div class="hidden mt-2" data-show-when="isProcessing">
+                        <div class="flex justify-center space-x-1">
+                            <div class="w-2 h-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+                            <div class="w-2 h-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+                            <div class="w-2 h-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: InputArea -->
+
+        <!-- Language Toggle -->
+        <!-- @COMPONENT: LanguageToggle [currentLanguage] -->
+        <div class="absolute top-20 right-6">
+            <button class="glass-effect rounded-full px-4 py-2 text-white/80 text-xs font-medium hover:bg-white/20 transition-all duration-300" data-bind="currentLanguage" data-event="click:toggleLanguage">
+                🌐 EN/हिं
+            </button>
+        </div>
+        <!-- @END_COMPONENT: LanguageToggle -->
+
+    </div>
+    <!-- @END_COMPONENT: VoiceAssistantApp -->
+
+    <script>
+        // TODO: Implement Web Speech API integration for STT
+        // TODO: Implement SpeechSynthesis API for TTS with Hindi/English support
+        // TODO: Implement Groq API integration for conversational responses
+        // TODO: Implement voice state management (listening, processing, speaking)
+        // TODO: Implement real-time chat updates and message history
+        // TODO: Implement college data context integration
+
+        (function() {
+            // Voice input state management
+            let isListening = false;
+            let isSpeaking = false;
+            let currentLanguage = 'en';
+
+            // UI Elements
+            const voiceButton = document.querySelector('[data-event="click:toggleVoiceInput"]');
+            const sendButton = document.querySelector('[data-event="click:sendMessage"]');
+            const textInput = document.querySelector('[data-bind="inputText"]');
+            const avatar = document.querySelector('[data-state="isIdle"]');
+            const languageToggle = document.querySelector('[data-event="click:toggleLanguage"]');
+
+            // Voice button click handler
+            if (voiceButton) {
+                voiceButton.addEventListener('click', function() {
+                    // TODO: Toggle voice input recording
+                    isListening = !isListening;
+                    
+                    if (isListening) {
+                        this.classList.add('recording-pulse');
+                        this.setAttribute('data-state', 'recording');
+                        // TODO: Start Web Speech API recognition
+                    } else {
+                        this.classList.remove('recording-pulse');
+                        this.setAttribute('data-state', 'idle');
+                        // TODO: Stop Web Speech API recognition
+                    }
+                });
+            }
+
+            // Send button click handler
+            if (sendButton) {
+                sendButton.addEventListener('click', function() {
+                    const message = textInput.value.trim();
+                    if (message) {
+                        // TODO: Send message to backend API
+                        // TODO: Add message to chat history
+                        // TODO: Clear input field
+                        textInput.value = '';
+                    }
+                });
+            }
+
+            // Text input enter key handler
+            if (textInput) {
+                textInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendButton.click();
+                    }
+                });
+            }
+
+            // Language toggle handler
+            if (languageToggle) {
+                languageToggle.addEventListener('click', function() {
+                    currentLanguage = currentLanguage === 'en' ? 'hi' : 'en';
+                    // TODO: Update TTS and STT language settings
+                    // TODO: Update UI language if needed
+                });
+            }
+
+            // Quick action buttons
+            const quickActionButtons = document.querySelectorAll('[data-action^="query:"]');
+            quickActionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const queryType = this.getAttribute('data-action').replace('query:', '');
+                    // TODO: Trigger predefined query based on button type
+                    // TODO: Add to chat and get response
+                });
+            });
+
+            // Audio replay buttons
+            const replayButtons = document.querySelectorAll('[data-action="replay_audio"]');
+            replayButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // TODO: Replay TTS for the associated message
+                });
+            });
+
+            // Initialize voice status
+            function updateVoiceStatus(status) {
+                const statusElement = document.querySelector('[data-bind="voiceStatus.text"]');
+                if (statusElement) {
+                    const statusMessages = {
+                        idle: 'Tap microphone to speak',
+                        listening: 'Listening...',
+                        processing: 'Processing your request...',
+                        speaking: 'Speaking...'
+                    };
+                    statusElement.textContent = statusMessages[status] || statusMessages.idle;
+                }
+            }
+
+            // Avatar animation control
+            function updateAvatarState(state) {
+                if (avatar) {
+                    avatar.setAttribute('data-state', state);
+                    // TODO: Add visual feedback based on state
+                }
+            }
+
+            // Initialize app
+            updateVoiceStatus('idle');
+            updateAvatarState('isIdle');
+        })();
+    </script>
+</body>
+</html>

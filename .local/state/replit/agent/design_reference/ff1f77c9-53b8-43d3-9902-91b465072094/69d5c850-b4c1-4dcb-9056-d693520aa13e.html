@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKSD College Voice Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'college-blue': '#1e40af',
+                        'college-navy': '#1e293b',
+                        'college-green': '#059669',
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-inter bg-gray-50 min-h-screen">
+    <!-- @COMPONENT: Header [College branding and title] -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- College logo placeholder -->
+                    <div class="w-12 h-12 bg-college-blue rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-college-navy">RKSD College</h1>
+                        <p class="text-sm text-gray-600">Voice Assistant</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-gray-700">AI Assistant</p>
+                        <p class="text-xs text-gray-500">Hindi & English Support</p>
+                    </div>
+                    <div class="w-8 h-8 bg-college-green rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: MainContainer [Main chat interface container] -->
+    <main class="max-w-4xl mx-auto px-4 py-6">
+        <!-- @COMPONENT: VoiceStatusBar [Voice status and controls] -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div id="voiceStatus" class="w-3 h-3 bg-gray-400 rounded-full transition-colors duration-300" data-state="idle"></div>
+                        <span id="statusText" class="text-sm font-medium text-gray-700">Ready to help</span>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <span id="languageIndicator">Hindi & English</span>
+                    </div>
+                </div>
+                
+                <!-- Voice Controls -->
+                <div class="flex items-center space-x-3">
+                    <!-- @FUNCTIONALITY: Mute/Unmute toggle for voice output -->
+                    <button id="muteToggle" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" data-muted="false" data-event="click:toggleMute">
+                        <i class="fas fa-volume-up text-gray-600"></i>
+                    </button>
+                    
+                    <!-- @FUNCTIONALITY: Main voice input button with visual feedback -->
+                    <button id="voiceButton" class="flex items-center space-x-2 px-6 py-3 bg-college-blue hover:bg-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg" data-listening="false" data-event="click:toggleVoiceInput">
+                        <i class="fas fa-microphone"></i>
+                        <span id="voiceButtonText">Start Speaking</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Voice Visualization -->
+            <div id="voiceVisualizer" class="mt-4 hidden">
+                <div class="flex items-center justify-center space-x-1">
+                    <div class="w-1 h-4 bg-college-blue rounded-full animate-pulse"></div>
+                    <div class="w-1 h-6 bg-college-blue rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
+                    <div class="w-1 h-8 bg-college-blue rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+                    <div class="w-1 h-6 bg-college-blue rounded-full animate-pulse" style="animation-delay: 0.3s"></div>
+                    <div class="w-1 h-4 bg-college-blue rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: VoiceStatusBar -->
+
+        <!-- @COMPONENT: ChatInterface [Main chat area] -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-college-blue to-college-navy px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-comments text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-white">Chat with RKSD Assistant</h2>
+                            <p class="text-sm text-blue-100">Ask about college information, events, and more</p>
+                        </div>
+                    </div>
+                    <button class="p-2 text-white/80 hover:text-white transition-colors" data-event="click:clearChat">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- @COMPONENT: ChatMessages [Scrollable message area] -->
+            <!-- @STATE: messages:array = [] -->
+            <div id="chatMessages" class="h-96 overflow-y-auto p-6 space-y-4">
+                <!-- Welcome Message -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-college-green rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 rounded-lg px-4 py-3 max-w-md">
+                            <p class="text-gray-800">Welcome to RKSD College! I'm your AI assistant. You can ask me about:</p>
+                            <ul class="mt-2 text-sm text-gray-600 space-y-1">
+                                <li>• Department information & contacts</li>
+                                <li>• College events & notices</li>
+                                <li>• Hostel timings & facilities</li>
+                                <li>• Academic schedules</li>
+                            </ul>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Just now</p>
+                    </div>
+                    <button class="p-1 text-gray-400 hover:text-college-green transition-colors" data-event="click:replayMessage">
+                        <i class="fas fa-volume-up text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Sample User Message -->
+                <div class="flex items-start space-x-3 justify-end">
+                    <div class="flex-1 max-w-md">
+                        <div class="bg-college-blue rounded-lg px-4 py-3 ml-auto">
+                            <p class="text-white" data-mock="true">Hostel ka timing kya hai?</p>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 text-right">2 minutes ago</p>
+                    </div>
+                    <div class="w-8 h-8 bg-college-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Sample Assistant Response -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-college-green rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 rounded-lg px-4 py-3 max-w-md">
+                            <p class="text-gray-800" data-mock="true">RKSD College hostel timing hai raat 10:00 baje tak. Students ko 10 PM se pehle hostel wapas aana hota hai. Special permission ke liye warden se contact kar sakte hain.</p>
+                            <div class="mt-2 p-2 bg-blue-50 rounded border-l-4 border-college-blue">
+                                <p class="text-sm text-college-blue font-medium">📞 Hostel Warden: +91-XXXX-XXXX</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">2 minutes ago</p>
+                    </div>
+                    <button class="p-1 text-gray-400 hover:text-college-green transition-colors" data-event="click:replayMessage">
+                        <i class="fas fa-volume-up text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Typing Indicator (Hidden by default) -->
+                <div id="typingIndicator" class="flex items-start space-x-3 hidden">
+                    <div class="w-8 h-8 bg-college-green rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 rounded-lg px-4 py-3 max-w-md">
+                            <div class="flex space-x-1">
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: ChatMessages -->
+
+            <!-- @COMPONENT: ChatInput [Text input area] -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="textInput"
+                                placeholder="Type your question here... (Hindi/English)"
+                                class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-college-blue focus:border-transparent outline-none transition-all"
+                                data-mock="true"
+                                data-bind="userInput"
+                            />
+                            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-college-blue transition-colors" data-event="click:sendMessage">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="px-6 py-3 bg-college-green hover:bg-green-700 text-white rounded-lg transition-colors font-medium" data-event="click:sendMessage">
+                        Send
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2 flex items-center">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Use voice input or type your question. I understand both Hindi and English.
+                </p>
+            </div>
+            <!-- @END_COMPONENT: ChatInput -->
+        </div>
+        <!-- @END_COMPONENT: ChatInterface -->
+
+        <!-- @COMPONENT: QuickActions [Predefined question buttons] -->
+        <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Questions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Department information kaise pata karu?">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-building text-college-blue"></i>
+                        <span class="text-sm font-medium text-gray-700">Department Info</span>
+                    </div>
+                </button>
+                
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Upcoming events kya hain?">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-calendar text-college-green"></i>
+                        <span class="text-sm font-medium text-gray-700">Upcoming Events</span>
+                    </div>
+                </button>
+                
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Library timings kya hain?">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-book text-purple-600"></i>
+                        <span class="text-sm font-medium text-gray-700">Library Timings</span>
+                    </div>
+                </button>
+                
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Admission process kya hai?">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-user-graduate text-orange-600"></i>
+                        <span class="text-sm font-medium text-gray-700">Admission Process</span>
+                    </div>
+                </button>
+                
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Contact details chahiye">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-phone text-red-600"></i>
+                        <span class="text-sm font-medium text-gray-700">Contact Details</span>
+                    </div>
+                </button>
+                
+                <button class="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200" data-event="click:quickQuestion" data-question="Facilities available kya hain?">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-cogs text-indigo-600"></i>
+                        <span class="text-sm font-medium text-gray-700">College Facilities</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: QuickActions -->
+    </main>
+    <!-- @END_COMPONENT: MainContainer -->
+
+    <!-- @COMPONENT: Footer [Professional footer with college info] -->
+    <footer class="mt-12 bg-college-navy text-white">
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">RKSD College</h4>
+                    <p class="text-gray-300 text-sm">Your intelligent voice assistant for all college-related queries. Available 24/7 in Hindi and English.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">College Website</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Student Portal</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Faculty Portal</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li>📧 support@rksdcollege.edu</li>
+                        <li>📞 +91-XXXX-XXXX</li>
+                        <li>🌐 Hindi & English Support</li>
+                        <li>🤖 AI-Powered Assistance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-600 mt-8 pt-4 text-center text-sm text-gray-400">
+                <p>© 2024 RKSD College Voice Assistant. Powered by AI Technology.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- @COMPONENT: LoadingOverlay [Full-screen loading overlay] -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 shadow-2xl max-w-sm mx-4">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-college-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-brain text-white text-2xl animate-pulse"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Processing...</h3>
+                <p class="text-sm text-gray-600">AI is thinking about your question</p>
+                <div class="mt-4 flex justify-center">
+                    <div class="w-8 h-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="w-full h-full bg-college-blue rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: LoadingOverlay -->
+
+    <script>
+        // TODO: Implement voice recognition and synthesis using Web Speech API
+        // TODO: Integrate with Groq API for AI responses
+        // TODO: Implement real-time message handling and state management
+        
+        (function() {
+            // Scoped variables to avoid global namespace pollution
+            let isListening = false;
+            let isMuted = false;
+            let recognition = null;
+            let synthesis = window.speechSynthesis;
+            
+            // Voice status management
+            function updateVoiceStatus(status, text) {
+                const statusDot = document.getElementById('voiceStatus');
+                const statusText = document.getElementById('statusText');
+                
+                statusDot.className = 'w-3 h-3 rounded-full transition-colors duration-300';
+                
+                switch(status) {
+                    case 'listening':
+                        statusDot.classList.add('bg-red-500', 'animate-pulse');
+                        break;
+                    case 'processing':
+                        statusDot.classList.add('bg-yellow-500', 'animate-pulse');
+                        break;
+                    case 'speaking':
+                        statusDot.classList.add('bg-green-500', 'animate-pulse');
+                        break;
+                    case 'muted':
+                        statusDot.classList.add('bg-red-600');
+                        break;
+                    default:
+                        statusDot.classList.add('bg-gray-400');
+                }
+                
+                if (statusText) statusText.textContent = text;
+            }
+            
+            // Mute toggle functionality
+            document.getElementById('muteToggle').addEventListener('click', function() {
+                isMuted = !isMuted;
+                this.setAttribute('data-muted', isMuted.toString());
+                
+                if (isMuted) {
+                    this.innerHTML = '<i class="fas fa-volume-mute text-red-600"></i>';
+                    synthesis.cancel(); // Stop any current speech
+                    updateVoiceStatus('muted', 'Voice muted');
+                } else {
+                    this.innerHTML = '<i class="fas fa-volume-up text-gray-600"></i>';
+                    updateVoiceStatus('idle', 'Ready to help');
+                }
+            });
+            
+            // Voice button toggle
+            document.getElementById('voiceButton').addEventListener('click', function() {
+                if (!isListening) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            });
+            
+            function startListening() {
+                isListening = true;
+                updateVoiceStatus('listening', 'Listening...');
+                document.getElementById('voiceVisualizer').classList.remove('hidden');
+                
+                const button = document.getElementById('voiceButton');
+                button.classList.add('bg-red-600', 'hover:bg-red-700');
+                button.classList.remove('bg-college-blue', 'hover:bg-blue-700');
+                document.getElementById('voiceButtonText').textContent = 'Stop Listening';
+                
+                // TODO: Implement actual speech recognition
+                console.log('Starting speech recognition...');
+            }
+            
+            function stopListening() {
+                isListening = false;
+                updateVoiceStatus('idle', 'Ready to help');
+                document.getElementById('voiceVisualizer').classList.add('hidden');
+                
+                const button = document.getElementById('voiceButton');
+                button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                button.classList.add('bg-college-blue', 'hover:bg-blue-700');
+                document.getElementById('voiceButtonText').textContent = 'Start Speaking';
+                
+                // TODO: Process the recorded speech
+                console.log('Stopping speech recognition...');
+            }
+            
+            // Quick question handlers
+            document.querySelectorAll('[data-event="click:quickQuestion"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    document.getElementById('textInput').value = question;
+                    // TODO: Auto-send the question
+                    console.log('Quick question selected:', question);
+                });
+            });
+            
+            // Text input handlers
+            document.getElementById('textInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            document.querySelectorAll('[data-event="click:sendMessage"]').forEach(button => {
+                button.addEventListener('click', sendMessage);
+            });
+            
+            function sendMessage() {
+                const input = document.getElementById('textInput');
+                const message = input.value.trim();
+                
+                if (message) {
+                    // TODO: Add message to chat and send to backend
+                    console.log('Sending message:', message);
+                    input.value = '';
+                    
+                    // Show typing indicator
+                    document.getElementById('typingIndicator').classList.remove('hidden');
+                    updateVoiceStatus('processing', 'Processing...');
+                    
+                    // TODO: Implement actual message sending and response handling
+                }
+            }
+            
+            // Chat clearing
+            document.querySelector('[data-event="click:clearChat"]').addEventListener('click', function() {
+                if (confirm('Clear chat history?')) {
+                    // TODO: Clear all messages except welcome message
+                    console.log('Clearing chat...');
+                }
+            });
+            
+            // Voice replay buttons
+            document.querySelectorAll('[data-event="click:replayMessage"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!isMuted) {
+                        // TODO: Replay the message audio
+                        console.log('Replaying message...');
+                        updateVoiceStatus('speaking', 'Speaking...');
+                    }
+                });
+            });
+            
+            // Initialize the application
+            function init() {
+                updateVoiceStatus('idle', 'Ready to help');
+                console.log('RKSD College Voice Assistant initialized');
+                
+                // TODO: Check for speech recognition support
+                // TODO: Load initial college data
+                // TODO: Set up WebSocket connection for real-time updates
+            }
+            
+            // Initialize when DOM is loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>
