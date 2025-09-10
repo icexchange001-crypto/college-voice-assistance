@@ -14,24 +14,49 @@ const allowedOrigins = [
   'https://silver-coyote-528857.hostingersite.com',
   'http://localhost:5000',
   'http://localhost:3000',
+  'http://127.0.0.1:5000',
   // Add any other domains you want to allow
   ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [])
 ];
 
+// Regex patterns for allowed domains
+const allowedOriginPatterns = [
+  /^https?:\/\/.*\.hostingersite\.com$/,
+  /^https?:\/\/localhost(:\d+)?$/,
+  /^https?:\/\/127\.0\.0\.1(:\d+)?$/
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    // Allow requests with no origin (like mobile apps, curl requests, same-origin)
+    if (!origin) {
       return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
     }
+    
+    // Check if origin is in the allowed list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Check if origin matches any allowed pattern
+    const isPatternMatch = allowedOriginPatterns.some(pattern => pattern.test(origin));
+    if (isPatternMatch) {
+      return callback(null, true);
+    }
+    
+    // Allow all origins in development mode
+    if (process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    
+    // For production debugging - log rejected origins
+    console.log('CORS: Rejected origin:', origin);
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
 
 app.use(express.json());
