@@ -216,6 +216,49 @@ Style Examples:
         console.log('TTS: Applied pronunciation corrections');
       }
 
+      const elevenlabsApiKey = process.env.ELEVENLABS_API_KEY;
+      if (elevenlabsApiKey && elevenlabsApiKey !== 'your_elevenlabs_api_key_here') {
+        try {
+          console.log('TTS: Attempting ElevenLabs API...');
+          const elevenlabsRequestBody = {
+            text: limitedText,
+            model_id: modelId || "eleven_multilingual_v2",
+            voice_settings: {
+              stability: stability || 0.6,
+              similarity_boost: similarityBoost || 0.8
+            }
+          };
+
+          const elevenlabsResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'audio/mpeg',
+              'Content-Type': 'application/json',
+              'xi-api-key': elevenlabsApiKey
+            },
+            body: JSON.stringify(elevenlabsRequestBody)
+          });
+
+          if (elevenlabsResponse.ok) {
+            const audioBuffer = await elevenlabsResponse.arrayBuffer();
+            console.log('TTS: ElevenLabs success! Audio size:', audioBuffer.byteLength, 'bytes');
+            res.set({
+              'Content-Type': 'audio/mpeg',
+              'Content-Length': audioBuffer.byteLength.toString(),
+              'X-TTS-Provider': 'elevenlabs'
+            });
+            return res.send(Buffer.from(audioBuffer));
+          } else {
+            const errorText = await elevenlabsResponse.text();
+            console.warn('TTS: ElevenLabs failed with status:', elevenlabsResponse.status, errorText);
+          }
+        } catch (elevenlabsError) {
+          console.warn('TTS: ElevenLabs error:', elevenlabsError);
+        }
+      } else {
+        console.log('TTS: ElevenLabs API key not configured, skipping...');
+      }
+
       const cartesiaApiKey = process.env.CARTESIA_API_KEY;
       if (cartesiaApiKey && cartesiaApiKey !== 'your_cartesia_api_key_here') {
         try {
@@ -274,50 +317,7 @@ Style Examples:
         console.log('TTS: Cartesia API key not configured, skipping...');
       }
 
-      const elevenlabsApiKey = process.env.ELEVENLABS_API_KEY;
-      if (elevenlabsApiKey && elevenlabsApiKey !== 'your_elevenlabs_api_key_here') {
-        try {
-          console.log('TTS: Attempting ElevenLabs API...');
-          const elevenlabsRequestBody = {
-            text: limitedText,
-            model_id: modelId || "eleven_multilingual_v2",
-            voice_settings: {
-              stability: stability || 0.6,
-              similarity_boost: similarityBoost || 0.8
-            }
-          };
-
-          const elevenlabsResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-            method: 'POST',
-            headers: {
-              'Accept': 'audio/mpeg',
-              'Content-Type': 'application/json',
-              'xi-api-key': elevenlabsApiKey
-            },
-            body: JSON.stringify(elevenlabsRequestBody)
-          });
-
-          if (elevenlabsResponse.ok) {
-            const audioBuffer = await elevenlabsResponse.arrayBuffer();
-            console.log('TTS: ElevenLabs success! Audio size:', audioBuffer.byteLength, 'bytes');
-            res.set({
-              'Content-Type': 'audio/mpeg',
-              'Content-Length': audioBuffer.byteLength.toString(),
-              'X-TTS-Provider': 'elevenlabs'
-            });
-            return res.send(Buffer.from(audioBuffer));
-          } else {
-            const errorText = await elevenlabsResponse.text();
-            console.warn('TTS: ElevenLabs failed with status:', elevenlabsResponse.status, errorText);
-          }
-        } catch (elevenlabsError) {
-          console.warn('TTS: ElevenLabs error:', elevenlabsError);
-        }
-      } else {
-        console.log('TTS: ElevenLabs API key not configured, skipping...');
-      }
-
-      console.error('TTS: Both Cartesia and ElevenLabs failed');
+      console.error('TTS: Both ElevenLabs and Cartesia failed');
       return res.status(503).json({
         message: "Speech synthesis unavailable - please check API configuration",
         error: "ALL_TTS_PROVIDERS_FAILED"
