@@ -1,0 +1,130 @@
+{
+  "college": {
+    "name": "R.K.S.D. (PG) College, Kaithal",
+    "established_year": 1954,
+    "motto": "Knowledge is Power",
+    "founder": "Rashtriya Vidya Samiti / Seth Makhan Lal Ji",
+    "address": "Kaithal, Haryana, India",
+    "phone": "+91-1746-234567",
+    "email": "info@rksdcollege.ac.in",
+    "website": "https://rksdcollege.ac.in/",
+    "affiliation": "Kurukshetra University, Kurukshetra",
+    "accreditation": ["NAAC A", "UGC Recognized"],
+    "campus_area_acres": 11.5,
+    "principal": "Dr. Rajbir Parashar",
+    "vice_principal": "Dr. Meena Patel",
+    "registrar": "Prof. Rakesh Agarwal"
+  },
+  "departments": [
+    {
+      "name": "Arts",
+      "head": "Prof. Sunita Malik",
+      "programs": ["B.A.", "M.A.", "Ph.D."],
+      "specializations": ["History", "Political Science", "English", "Hindi", "Sanskrit"]
+    },
+    {
+      "name": "Science",
+      "head": "Dr. Anil Kumar",
+      "programs": ["B.Sc.", "M.Sc.", "Ph.D."],
+      "specializations": ["Physics", "Chemistry", "Mathematics", "Zoology", "Botany"]
+    },
+    {
+      "name": "Commerce",
+      "head": "Prof. Rajeev Sharma",
+      "programs": ["B.Com.", "M.Com."],
+      "specializations": ["Accounting", "Business Studies", "Finance"]
+    },
+    {
+      "name": "Computer Science",
+      "head": "Dr. Kavita Yadav",
+      "programs": ["BCA", "M.Sc. Computer Science"],
+      "specializations": ["Programming", "AI/ML", "Web Development"]
+    }
+  ],
+  "sports": {
+    "facilities": ["Cricket Ground", "Football Ground", "Basketball Court", "Badminton", "Athletics Track"],
+    "achievements": [
+      "Inter-university cricket winners 2019",
+      "State-level athletics representation 2021"
+    ],
+    "clubs": ["Cricket Club", "Football Club", "Athletics Club"]
+  },
+  "ncc": {
+    "units": ["Army Wing (Boys)", "Army Wing (Girls)"],
+    "activities": [
+      "Republic Day Parade participation",
+      "National Camps",
+      "Disaster Relief Drills"
+    ]
+  },
+  "nss": {
+    "motto": "Not Me But You",
+    "activities": [
+      "Blood Donation Camps",
+      "Tree Plantation Drives",
+      "Awareness Rallies",
+      "Village Adoption Programs"
+    ]
+  },
+  "cultural": {
+    "annual_fest": "Spandan",
+    "events": ["Dance", "Drama", "Debate", "Singing", "Fine Arts", "Quiz Competitions"],
+    "clubs": ["Drama Club", "Music Club", "Literary Club", "Fine Arts Society"]
+  },
+  "hostel": {
+    "boys_timing": "10:00 PM",
+    "girls_timing": "9:30 PM",
+    "late_entry_policy": "Prior permission from warden required",
+    "facilities": ["Wi-Fi", "Mess", "Recreation Room", "Study Hall", "Laundry"]
+  },
+  "events": [
+    {
+      "name": "Technova",
+      "type": "Annual Tech Fest",
+      "month": "March",
+      "activities": ["Coding Competition", "Robotics", "Paper Presentation", "Hackathon"]
+    },
+    {
+      "name": "Spandan",
+      "type": "Cultural Fest",
+      "month": "November",
+      "activities": ["Dance", "Drama", "Music", "Literary Events"]
+    },
+    {
+      "name": "Convocation",
+      "type": "Graduation Ceremony",
+      "month": "June",
+      "description": "Annual graduation ceremony for final year students"
+    }
+  ],
+  "contacts": {
+    "principal_office": "+91-1746-220101",
+    "admission_office": "+91-1746-220102",
+    "academic_office": "+91-1746-220103",
+    "hostel_office": "+91-1746-220104",
+    "placement_cell": "+91-1746-220105"
+  },
+  "timings": {
+    "college_hours": "8:00 AM - 5:00 PM",
+    "library": "8:00 AM - 8:00 PM",
+    "lab_hours": "8:00 AM - 6:00 PM",
+    "office_hours": "9:00 AM - 4:00 PM"
+  },
+  "admission": {
+    "application_period": "May - July",
+    "entrance_exam": "Merit-based under Kurukshetra University norms",
+    "merit_list_date": "August",
+    "counseling_dates": "August - September"
+  },
+  "achievements": {
+    "academic": [
+      "Consistent university rank holders in Science and Commerce",
+      "Research publications in national and international journals"
+    ],
+    "extracurricular": [
+      "Winners of Zonal Youth Festival 2022",
+      "Gold medal in State-level Debate Competition"
+    ]
+  }
+}
+
