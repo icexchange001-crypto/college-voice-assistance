@@ -1,0 +1,144 @@
+{
+  "classes": [
+    {
+      "course": "B.Tech CSE - Semester 1",
+      "subjects": [
+        {
+          "subject": "Programming Fundamentals",
+          "teacher": "Dr. Rajesh Kumar",
+          "room": "Lab-A1",
+          "timing": "9:00 AM - 10:30 AM",
+          "days": ["Monday", "Wednesday", "Friday"]
+        },
+        {
+          "subject": "Mathematics-1",
+          "teacher": "Prof. Sunita Agarwal",
+          "room": "Room-101",
+          "timing": "10:45 AM - 12:15 PM",
+          "days": ["Monday", "Tuesday", "Thursday"]
+        },
+        {
+          "subject": "Physics",
+          "teacher": "Dr. Vikram Shah",
+          "room": "Room-102",
+          "timing": "2:00 PM - 3:30 PM",
+          "days": ["Tuesday", "Wednesday", "Friday"]
+        }
+      ]
+    },
+    {
+      "course": "B.Tech ECE - Semester 1",
+      "subjects": [
+        {
+          "subject": "Basic Electronics",
+          "teacher": "Dr. Priya Sharma",
+          "room": "Lab-B1",
+          "timing": "9:00 AM - 10:30 AM",
+          "days": ["Tuesday", "Thursday", "Friday"]
+        },
+        {
+          "subject": "Circuit Analysis",
+          "teacher": "Prof. Ankit Gupta",
+          "room": "Room-201",
+          "timing": "11:00 AM - 12:30 PM",
+          "days": ["Monday", "Wednesday", "Friday"]
+        },
+        {
+          "subject": "Engineering Mathematics",
+          "teacher": "Prof. Sunita Agarwal",
+          "room": "Room-202",
+          "timing": "2:00 PM - 3:30 PM",
+          "days": ["Monday", "Tuesday", "Thursday"]
+        }
+      ]
+    },
+    {
+      "course": "B.Tech Mechanical - Semester 1",
+      "subjects": [
+        {
+          "subject": "Engineering Mechanics",
+          "teacher": "Dr. Amit Singh",
+          "room": "Room-301",
+          "timing": "9:00 AM - 10:30 AM",
+          "days": ["Monday", "Wednesday", "Friday"]
+        },
+        {
+          "subject": "Engineering Drawing",
+          "teacher": "Prof. Rohit Verma",
+          "room": "Drawing Hall-1",
+          "timing": "11:00 AM - 12:30 PM",
+          "days": ["Tuesday", "Thursday", "Friday"]
+        },
+        {
+          "subject": "Workshop Practice",
+          "teacher": "Prof. Manoj Kumar",
+          "room": "Workshop-A",
+          "timing": "2:00 PM - 4:00 PM",
+          "days": ["Monday", "Wednesday"]
+        }
+      ]
+    }
+  ],
+  "rooms": {
+    "Lab-A1": "Computer Science Lab - Ground Floor",
+    "Lab-B1": "Electronics Lab - First Floor",
+    "Room-101": "Lecture Hall - Ground Floor",
+    "Room-102": "Physics Classroom - Ground Floor",
+    "Room-201": "Electronics Classroom - First Floor",
+    "Room-202": "Mathematics Classroom - First Floor",
+    "Room-301": "Mechanical Classroom - Second Floor",
+    "Drawing Hall-1": "Engineering Drawing Hall - Second Floor",
+    "Workshop-A": "Mechanical Workshop - Ground Floor"
+  },
+  "teachers": [
+    {
+      "name": "Dr. Rajesh Kumar",
+      "department": "Computer Science & Engineering",
+      "cabin": "Faculty-CSE-01",
+      "timing": "9:00 AM - 5:00 PM",
+      "subjects": ["Programming Fundamentals", "Data Structures", "Algorithms"]
+    },
+    {
+      "name": "Dr. Priya Sharma",
+      "department": "Electronics & Communication",
+      "cabin": "Faculty-ECE-01",
+      "timing": "9:00 AM - 5:00 PM",
+      "subjects": ["Basic Electronics", "Digital Electronics", "VLSI Design"]
+    },
+    {
+      "name": "Dr. Amit Singh",
+      "department": "Mechanical Engineering",
+      "cabin": "Faculty-ME-01",
+      "timing": "9:00 AM - 5:00 PM",
+      "subjects": ["Engineering Mechanics", "Thermodynamics", "Manufacturing"]
+    },
+    {
+      "name": "Prof. Sunita Agarwal",
+      "department": "Mathematics",
+      "cabin": "Faculty-Math-01",
+      "timing": "9:00 AM - 4:00 PM",
+      "subjects": ["Mathematics-1", "Engineering Mathematics", "Statistics"]
+    },
+    {
+      "name": "Prof. Ankit Gupta",
+      "department": "Electronics & Communication",
+      "cabin": "Faculty-ECE-02",
+      "timing": "10:00 AM - 5:00 PM",
+      "subjects": ["Circuit Analysis", "Network Theory", "Signal Processing"]
+    },
+    {
+      "name": "Prof. Rohit Verma",
+      "department": "Mechanical Engineering",
+      "cabin": "Faculty-ME-02",
+      "timing": "9:30 AM - 4:30 PM",
+      "subjects": ["Engineering Drawing", "CAD", "Design Engineering"]
+    },
+    {
+      "name": "Prof. Manoj Kumar",
+      "department": "Mechanical Engineering",
+      "cabin": "Workshop-Office",
+      "timing": "8:00 AM - 4:00 PM",
+      "subjects": ["Workshop Practice", "Manufacturing Processes", "Material Science"]
+    }
+  ]
+}
