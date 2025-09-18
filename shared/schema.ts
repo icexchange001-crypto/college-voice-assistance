@@ -45,3 +45,4 @@ export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
 export type CollegeInfo = typeof collegeInfo.$inferSelect;
 export type InsertCollegeInfo = z.infer<typeof insertCollegeInfoSchema>;
+
