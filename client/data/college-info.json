@@ -1,205 +1,47 @@
-{
-  "college": {
-    "name": "R.K.S.D. (PG) College, Kaithal",
-    "also_known_as": ["RKSD College", "RKSD (PG) College, Kaithal"],
-    "established_year": 1954,
-    "motto": "Knowledge is Power",
-    "founder": "Seth Makhan Lal Ji / Rashtriya Vidya Samiti",
-    "address": "Ambala Road, Kaithal, Haryana, India - PIN 136027",
-    "phone": "+91-1746-222368",
-    "email": {
-      "college_email": "rksdcollegektl@yahoo.com",
-      "principal_email": "principal@rksdcollege.ac.in",
-      "other": "rksdeveningcollege@gmail.com"
-    },
-    "website": "https://rksdcollege.ac.in/",
-    "erp_portal": "https://erp.rksdcollege.com/",
-    "affiliation": "Kurukshetra University, Kurukshetra",
-    "accreditation": ["NAAC: Grade A", "UGC Recognized"],
-    "campus_area_acres": 11.52,
-    "campus_highlights": [
-      "Main academic blocks (Morning & Evening shifts)",
-      "30+ Smart classrooms (Extension Block)",
-      "Digital library with statistics & e-resources",
-      "Indoor stadium & multiple playgrounds",
-      "Solar Power Plant (on-campus)",
-      "Conference hall, canteen, common rooms, language lab, computer labs"
-    ],
-    "principal": "Dr. Rajbir Parashar",
-    "vice_principal": "Dr. Meena Patel",
-    "registrar": "Prof. Rakesh Agarwal",
-    "governing_body": {
-      "chairman": "Sh. Ashwani Shorewala",
-      "management": "Rashtriya Vidya Samiti / RKSD Group of Institutions"
-    },
-    "student_strength_approx": 5200,
-    "faculty_strength_approx": 41
-  },
-  "departments": {
-    "arts": {
-      "head": "Prof. Sunita Malik",
-      "programs": ["B.A.", "M.A.", "Ph.D."],
-      "specializations": ["History", "Political Science", "English", "Hindi", "Sanskrit", "Punjabi"]
-    },
-    "science": {
-      "head": "Dr. Anil Kumar",
-      "programs": ["B.Sc.", "M.Sc.", "Ph.D."],
-      "specializations": ["Physics", "Chemistry", "Mathematics", "Zoology", "Botany", "Electronics", "Computer Science"]
-    },
-    "commerce": {
-      "head": "Prof. Rajeev Sharma",
-      "programs": ["B.Com.", "M.Com."],
-      "specializations": ["Accounting", "Business Studies", "Finance", "Taxation", "Insurance"]
-    },
-    "computer_science": {
-      "head": "Dr. Kavita Yadav",
-      "programs": ["BCA", "PGDCA", "M.Sc. Computer Science"],
-      "specializations": ["Programming", "AI/ML", "Web Development", "Database Systems"]
-    },
-    "physical_education": {
-      "head": "Not listed (see faculty page)",
-      "programs": ["Certificate Courses"],
-      "specializations": ["Sports Science", "Fitness Training"]
-    },
-    "library_and_info_science": {
-      "head": "Not listed",
-      "programs": ["Certificate/Training"],
-      "specializations": ["Library Management", "Information Science"]
-    },
-    "departments_page_url": "https://rksdcollege.ac.in/courses/"
-  },
-  "courses": {
-    "UG": [
-      { "name": "B.A.", "duration_years": 3, "session": "Morning & Evening" },
-      { "name": "B.Com.", "duration_years": 3, "session": "Morning & Evening" },
-      { "name": "B.Com (Hons)", "duration_years": 3, "session": "Evening" },
-      { "name": "B.Com (Insurance) - Vocational", "duration_years": 3, "session": "Evening" },
-      { "name": "B.Com (Taxation) - Vocational", "duration_years": 3, "session": "Evening" },
-      { "name": "B.B.A.", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Physical Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Life Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Electronics)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Computer Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.C.A.", "duration_years": 3, "session": "Morning", "seat_intake_estimate": 117 }
-    ],
-    "PG": [
-      { "name": "M.A. (English)", "duration_years": 2, "session": "Morning & Evening" },
-      { "name": "M.A. (Hindi)", "duration_years": 2, "session": "Morning & Evening" },
-      { "name": "M.A. (Political Science)", "duration_years": 2, "session": "Morning & Evening" },
-      { "name": "M.A. (Economics)", "duration_years": 2, "session": "Evening" },
-      { "name": "M.Com.", "duration_years": 2, "session": "Evening" },
-      { "name": "M.Sc. (Mathematics)", "duration_years": 2, "session": "Morning" },
-      { "name": "PGDCA", "duration_years": 1, "session": "Evening" },
-      { "name": "PG Diploma (Yoga)", "duration_years": 1, "session": "Morning" }
-    ],
-    "certificate_and_addon": ["Add-on / Value Added Certificate Courses available under Admissions -> Add-on/Certificate Courses"],
-    "total_number_of_courses_estimate": 28
-  },
-  "sports": {
-    "facilities": ["Cricket Ground", "Football Ground", "Basketball Court", "Badminton Court", "Athletics Track", "Indoor Stadium"],
-    "achievements": ["Inter-university cricket winners 2019", "State-level athletics representation 2021"],
-    "clubs": ["Cricket Club", "Football Club", "Athletics Club"]
-  },
-  "ncc": {
-    "units": ["Army Wing (Boys)", "Army Wing (Girls)"],
-    "activities": ["Republic Day Parade participation", "National Camps", "Disaster Relief Drills"]
-  },
-  "nss": {
-    "motto": "Not Me But You",
-    "activities": ["Blood Donation Camps", "Tree Plantation Drives", "Awareness Rallies", "Village Adoption Programs"]
-  },
-  "cultural": {
-    "annual_fest": "Spandan",
-    "events": ["Dance", "Drama", "Debate", "Singing", "Fine Arts", "Quiz Competitions"],
-    "clubs": ["Drama Club", "Music Club", "Literary Club", "Fine Arts Society"]
-  },
-  "hostel": {
-    "boys_timing": "10:00 PM",
-    "girls_timing": "9:30 PM",
-    "late_entry_policy": "Prior permission from warden required",
-    "facilities": ["Wi-Fi", "Mess", "Recreation Room", "Study Hall", "Laundry"],
-    "hostel_office_contact": "See Hostel page on website"
-  },
-  "events": [
-    {
-      "name": "Technova",
-      "type": "Annual Tech Fest",
-      "month": "March",
-      "activities": ["Coding Competition", "Robotics", "Paper Presentation", "Hackathon"]
-    },
-    {
-      "name": "Spandan",
-      "type": "Cultural Fest",
-      "month": "November",
-      "activities": ["Dance", "Drama", "Music", "Literary Events"]
-    },
-    {
-      "name": "Convocation",
-      "type": "Graduation Ceremony",
-      "month": "June",
-      "description": "Annual graduation ceremony for final year students"
-    }
-  ],
-  "admissions": {
-    "application_period": "Online centralized admission May - July",
-    "merit_list_date": "August",
-    "counseling_dates": "August - September",
-    "online_admission_portal": "https://rksdcollege.ac.in/online-admission/",
-    "selection_criteria": "Merit-based as per Kurukshetra University norms",
-    "seat_matrix_public_link": "https://rksdcollege.ac.in/seat-matrix/",
-    "fee_structure_link": "https://rksdcollege.ac.in/fees-structure/",
-    "typical_fee_ranges": {
-      "UG_first_year_approx": "INR 10,460 to INR 29,060",
-      "BCA_first_year_approx": "INR 26,620 to INR 27,800"
-    },
-    "eligibility": {
-      "UG": "10+2 pass from recognized board (min. 33%–40%)",
-      "PG": "Bachelor’s degree in relevant subject (min. ~45%)"
-    }
-  },
-  "infrastructure_and_facilities": {
-    "library": {
-      "timings": "8:00 AM - 8:00 PM",
-      "digital_and_physical_collections": "E-resources, advisory committee, library statistics available on site"
-    },
-    "labs": {
-      "computer_labs": "Multiple computer labs; language lab; electronics and science labs",
-      "lab_hours": "8:00 AM - 6:00 PM"
-    },
-    "sports_facilities": ["Playgrounds", "Indoor Stadium", "Outdoor courts"],
-    "solar_power": "On-campus solar power plant"
-  },
-  "cells_committees_and_extensions": {
-    "placement_career_cell": "Career Guidance & Placement Cell",
-    "anti_ragging_committee": "Constituted as per UGC norms",
-    "women_cell": "Women Grievance/Empowerment Cell active",
-    "iqac": "IQAC with AQAR reports at https://rksdcollege.ac.in/iqac-aqar/"
-  },
-  "contacts": {
-    "principal_office": "+91-1746-220101",
-    "admission_office": "+91-1746-220102",
-    "academic_office": "+91-1746-220103",
-    "hostel_office": "+91-1746-220104",
-    "placement_cell": "+91-1746-220105"
-  },
-  "timings": {
-    "college_hours": "8:00 AM - 5:00 PM",
-    "office_hours": "9:00 AM - 4:00 PM"
-  },
-  "achievements": {
-    "academic": ["Consistent university rank holders", "Faculty research publications (national/international journals)"],
-    "extracurricular": ["Winners of Zonal Youth Festival 2022", "Gold medal in State-level Debate Competition"]
-  },
-  "useful_links_and_sources": [
-    "https://rksdcollege.ac.in/",
-    "https://rksdcollege.ac.in/courses/",
-    "https://rksdcollege.ac.in/contact-us-2/",
-    "https://rksdcollege.ac.in/online-admission/",
-    "https://rksdcollege.ac.in/iqac-aqar/",
-    "https://erp.rksdcollege.com/",
-    "https://www.careers360.com/colleges/rksd-pg-college-kaithal",
-    "https://www.shiksha.com/college/r-k-s-d-pg-college-kaithal-69329",
-    "https://collegedunia.com/college/3549-rksd-pg-college-kaithal"
-  ],
-  "notes_and_disclaimer": "This file merges official site data, public portals (Careers360, Shiksha, Collegedunia) and manually added department heads, registrar, vice principal, event months, hostel timings. For exact fee amounts, seat counts, and faculty names — refer to official notices and prospectus."
-}
+import { sql } from "drizzle-orm";
+import { pgTable, text, varchar, timestamp, integer } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+});
+
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  content: text("content").notNull(),
+  role: text("role").notNull(), // 'user' or 'assistant'
+  timestamp: timestamp("timestamp").defaultNow(),
+  language: text("language"), // 'en' or 'hi'
+});
+
+export const collegeInfo = pgTable("college_info", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  category: text("category").notNull(), // 'hostel', 'department', 'contact', etc.
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  metadata: text("metadata"), // JSON string for additional data
+});
+
+export const insertUserSchema = createInsertSchema(users).pick({
+  username: true,
+  password: true,
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertCollegeInfoSchema = createInsertSchema(collegeInfo).omit({
+  id: true,
+});
+
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type User = typeof users.$inferSelect;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type CollegeInfo = typeof collegeInfo.$inferSelect;
+export type InsertCollegeInfo = z.infer<typeof insertCollegeInfoSchema>;
