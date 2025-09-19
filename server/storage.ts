@@ -247,28 +247,11 @@ export class MemStorage implements IStorage {
 }
 
 export const storage = new MemStorage();
-      const collegeInfoPath = path.join(process.cwd(), 'client', 'data', 'college-info.json');
-      const classesPath = path.join(process.cwd(), 'client', 'data', 'classes-schedule.json');
-      
-      const collegeInfoData = JSON.parse(fs.readFileSync(collegeInfoPath, 'utf8'));
-      const classesData = JSON.parse(fs.readFileSync(classesPath, 'utf8'));
-
-      const defaultData: Omit<CollegeInfo, 'id'>[] = [
-        // College Basic Info
-        {
-          category: 'college',
-          title: 'College Basic Information',
-          content: `${collegeInfoData.college.name} established in ${collegeInfoData.college.established_year}. Principal: ${collegeInfoData.college.principal}. Vice Principal: ${collegeInfoData.college.vice_principal}. Registrar: ${collegeInfoData.college.registrar}. Founder: ${collegeInfoData.college.founder}. Motto: "${collegeInfoData.college.motto}". Address: ${collegeInfoData.college.address}. Phone: ${collegeInfoData.college.phone}. Email: ${collegeInfoData.college.email}. Website: ${collegeInfoData.college.website}. Affiliated with: ${collegeInfoData.college.affiliation}.`,
-          metadata: JSON.stringify(collegeInfoData.college)
-        },
-        
-        // Departments
-        ...collegeInfoData.departments.map((dept: any) => ({
-          category: 'department',
-          title: `${dept.name} Department`,
-          content: `${dept.name} Department Head: ${dept.head}. Programs offered: ${dept.programs.join(', ')}. Specializations: ${dept.specializations.join(', ')}.`,
-          metadata: JSON.stringify(dept)
-        })),
+            category: 'department',
+            title: `${key.charAt(0).toUpperCase() + key.replace(/_/g, ' ').slice(1)} Department`,
+            content: `${key.charAt(0).toUpperCase() + key.replace(/_/g, ' ').slice(1)} Department Head: ${dept.head}. Programs offered: ${dept.programs.join(', ')}. Specializations: ${dept.specializations.join(', ')}.`,
+            metadata: JSON.stringify({ name: key, ...dept })
+          })),
 
         // Contact Information
         {
@@ -336,8 +319,8 @@ export const storage = new MemStorage();
         {
           category: 'admission',
           title: 'Admission Process',
-          content: `Application Period: ${collegeInfoData.admission.application_period}. Entrance: ${collegeInfoData.admission.entrance_exam}. Merit List: ${collegeInfoData.admission.merit_list_date}. Counseling: ${collegeInfoData.admission.counseling_dates}.`,
-          metadata: JSON.stringify(collegeInfoData.admission)
+          content: `Application Period: ${collegeInfoData.admissions.application_period}. Merit List: ${collegeInfoData.admissions.merit_list_date}. Counseling: ${collegeInfoData.admissions.counseling_dates}. Portal: ${collegeInfoData.admissions.online_admission_portal}. Selection Criteria: ${collegeInfoData.admissions.selection_criteria}.`,
+          metadata: JSON.stringify(collegeInfoData.admissions)
         },
 
         // Teachers and Faculty
@@ -422,6 +405,7 @@ export const storage = new MemStorage();
       ...message,
       id,
       timestamp: new Date(),
+      language: message.language ?? null,
     };
     this.chatMessages.push(chatMessage);
     return chatMessage;
@@ -437,7 +421,11 @@ export const storage = new MemStorage();
 
   async createCollegeInfo(info: InsertCollegeInfo): Promise<CollegeInfo> {
     const id = randomUUID();
-    const collegeInfo: CollegeInfo = { ...info, id };
+    const collegeInfo: CollegeInfo = { 
+      ...info, 
+      id,
+      metadata: info.metadata ?? null 
+    };
     this.collegeInfo.push(collegeInfo);
     return collegeInfo;
   }
