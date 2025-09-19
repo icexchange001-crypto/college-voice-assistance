@@ -109,7 +109,7 @@ function cleanupOldEntries(): void {
   let removedCount = 0;
   
   // Remove expired entries first
-  for (const [key, entry] of ttsCache.entries()) {
+  for (const [key, entry] of Array.from(ttsCache.entries())) {
     if (now - entry.timestamp > CACHE_TTL_MS) {
       ttsCache.delete(key);
       removedCount++;
