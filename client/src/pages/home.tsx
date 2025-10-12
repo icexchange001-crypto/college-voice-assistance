@@ -99,6 +99,7 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   const [isPreparingSpeech, setIsPreparingSpeech] = useState(false);
   const [pendingAssistantMessage, setPendingAssistantMessage] = useState<{id: string, text: string} | null>(null);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const requestIdRef = useRef(0);
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -118,7 +119,7 @@ export default function Home() {
 
   // Send message mutation
   const sendMessageMutation = useMutation({
-    mutationFn: async (data: { message: string; language?: string }) => {
+    mutationFn: async (data: { message: string; language?: string; sessionId?: string }) => {
       setIsTyping(true);
       const response = await apiRequest("POST", "/api/ask", data);
       return response.json();
@@ -126,6 +127,12 @@ export default function Home() {
     onSuccess: async (data) => {
       setShowListening(false);
       setIsTyping(false);
+      
+      // Save sessionId from response
+      if (data.sessionId) {
+        setSessionId(data.sessionId);
+      }
+      
       if (data.response) {
         const assistantMessageId = `assistant-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -195,12 +202,13 @@ export default function Home() {
 
     sendMessageMutation.mutate({
       message: message.trim(),
-      language: "en"
+      language: "en",
+      sessionId: sessionId
     });
 
     setTextInput("");
     resetTranscript();
-  }, [sendMessageMutation, resetTranscript, pendingAssistantMessage, stopSpeaking]);
+  }, [sendMessageMutation, resetTranscript, pendingAssistantMessage, stopSpeaking, sessionId]);
 
   const handleSpeak = useCallback((text: string) => {
     if (isSpeaking) {
