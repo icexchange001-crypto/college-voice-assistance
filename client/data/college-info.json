@@ -1,8 +1,10 @@
 {
   "college": {
     "name": "R.K.S.D. (PG) College, Kaithal",
+    "full_form": "Rashtriya Kanya/Sanskriti/Science/…/Development (depending on actual full form)",
     "also_known_as": ["RKSD College", "RKSD (PG) College, Kaithal"],
     "established_year": 1954,
+
     "motto": "Knowledge is Power",
     "founder": "Seth Makhan Lal Ji / Rashtriya Vidya Samiti",
     "address": "Ambala Road, Kaithal, Haryana, India - PIN 136027",
@@ -39,22 +41,48 @@
     "arts": {
       "head": "Prof. Sunita Malik",
       "programs": ["B.A.", "M.A.", "Ph.D."],
-      "specializations": ["History", "Political Science", "English", "Hindi", "Sanskrit", "Punjabi"]
+      "specializations": [
+        "History",
+        "Political Science",
+        "English",
+        "Hindi",
+        "Sanskrit",
+        "Punjabi"
+      ]
     },
     "science": {
       "head": "Dr. Anil Kumar",
       "programs": ["B.Sc.", "M.Sc.", "Ph.D."],
-      "specializations": ["Physics", "Chemistry", "Mathematics", "Zoology", "Botany", "Electronics", "Computer Science"]
+      "specializations": [
+        "Physics",
+        "Chemistry",
+        "Mathematics",
+        "Zoology",
+        "Botany",
+        "Electronics",
+        "Computer Science"
+      ]
     },
     "commerce": {
       "head": "Prof. Rajeev Sharma",
       "programs": ["B.Com.", "M.Com."],
-      "specializations": ["Accounting", "Business Studies", "Finance", "Taxation", "Insurance"]
+      "specializations": [
+        "Accounting",
+        "Business Studies",
+        "Finance",
+        "Taxation",
+        "Insurance"
+      ]
     },
     "computer_science": {
       "head": "Dr. Kavita Yadav",
       "programs": ["BCA", "PGDCA", "M.Sc. Computer Science"],
-      "specializations": ["Programming", "AI/ML", "Web Development", "Database Systems"]
+      "specializations": [
+        "Programming",
+        "AI/ML",
+        "Web Development",
+        "Database Systems"
+      ]
     },
     "physical_education": {
       "head": "Not listed (see faculty page)",
@@ -73,44 +101,117 @@
       { "name": "B.A.", "duration_years": 3, "session": "Morning & Evening" },
       { "name": "B.Com.", "duration_years": 3, "session": "Morning & Evening" },
       { "name": "B.Com (Hons)", "duration_years": 3, "session": "Evening" },
-      { "name": "B.Com (Insurance) - Vocational", "duration_years": 3, "session": "Evening" },
-      { "name": "B.Com (Taxation) - Vocational", "duration_years": 3, "session": "Evening" },
+      {
+        "name": "B.Com (Insurance) - Vocational",
+        "duration_years": 3,
+        "session": "Evening"
+      },
+      {
+        "name": "B.Com (Taxation) - Vocational",
+        "duration_years": 3,
+        "session": "Evening"
+      },
       { "name": "B.B.A.", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Physical Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Life Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Electronics)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.Sc. (Computer Science)", "duration_years": 3, "session": "Morning" },
-      { "name": "B.C.A.", "duration_years": 3, "session": "Morning", "seat_intake_estimate": 117 }
+      {
+        "name": "B.Sc. (Physical Science)",
+        "duration_years": 3,
+        "session": "Morning"
+      },
+      {
+        "name": "B.Sc. (Life Science)",
+        "duration_years": 3,
+        "session": "Morning"
+      },
+      {
+        "name": "B.Sc. (Electronics)",
+        "duration_years": 3,
+        "session": "Morning"
+      },
+      {
+        "name": "B.Sc. (Computer Science)",
+        "duration_years": 3,
+        "session": "Morning"
+      },
+      {
+        "name": "B.C.A.",
+        "duration_years": 3,
+        "session": "Morning",
+        "seat_intake_estimate": 117
+      }
     ],
     "PG": [
-      { "name": "M.A. (English)", "duration_years": 2, "session": "Morning & Evening" },
-      { "name": "M.A. (Hindi)", "duration_years": 2, "session": "Morning & Evening" },
-      { "name": "M.A. (Political Science)", "duration_years": 2, "session": "Morning & Evening" },
+      {
+        "name": "M.A. (English)",
+        "duration_years": 2,
+        "session": "Morning & Evening"
+      },
+      {
+        "name": "M.A. (Hindi)",
+        "duration_years": 2,
+        "session": "Morning & Evening"
+      },
+      {
+        "name": "M.A. (Political Science)",
+        "duration_years": 2,
+        "session": "Morning & Evening"
+      },
       { "name": "M.A. (Economics)", "duration_years": 2, "session": "Evening" },
       { "name": "M.Com.", "duration_years": 2, "session": "Evening" },
-      { "name": "M.Sc. (Mathematics)", "duration_years": 2, "session": "Morning" },
+      {
+        "name": "M.Sc. (Mathematics)",
+        "duration_years": 2,
+        "session": "Morning"
+      },
       { "name": "PGDCA", "duration_years": 1, "session": "Evening" },
       { "name": "PG Diploma (Yoga)", "duration_years": 1, "session": "Morning" }
     ],
-    "certificate_and_addon": ["Add-on / Value Added Certificate Courses available under Admissions -> Add-on/Certificate Courses"],
+    "certificate_and_addon": [
+      "Add-on / Value Added Certificate Courses available under Admissions -> Add-on/Certificate Courses"
+    ],
     "total_number_of_courses_estimate": 28
   },
   "sports": {
-    "facilities": ["Cricket Ground", "Football Ground", "Basketball Court", "Badminton Court", "Athletics Track", "Indoor Stadium"],
-    "achievements": ["Inter-university cricket winners 2019", "State-level athletics representation 2021"],
+    "facilities": [
+      "Cricket Ground",
+      "Football Ground",
+      "Basketball Court",
+      "Badminton Court",
+      "Athletics Track",
+      "Indoor Stadium"
+    ],
+    "achievements": [
+      "Inter-university cricket winners 2019",
+      "State-level athletics representation 2021"
+    ],
     "clubs": ["Cricket Club", "Football Club", "Athletics Club"]
   },
   "ncc": {
     "units": ["Army Wing (Boys)", "Army Wing (Girls)"],
-    "activities": ["Republic Day Parade participation", "National Camps", "Disaster Relief Drills"]
+    "activities": [
+      "Republic Day Parade participation",
+      "National Camps",
+      "Disaster Relief Drills"
+    ]
   },
   "nss": {
     "motto": "Not Me But You",
-    "activities": ["Blood Donation Camps", "Tree Plantation Drives", "Awareness Rallies", "Village Adoption Programs"]
+    "activities": [
+      "Blood Donation Camps",
+      "Tree Plantation Drives",
+      "Awareness Rallies",
+      "Village Adoption Programs"
+    ]
   },
   "cultural": {
     "annual_fest": "Spandan",
-    "events": ["Dance", "Drama", "Debate", "Singing", "Fine Arts", "Quiz Competitions"],
+    "events": [
+      "Dance",
+      "Drama",
+      "Debate",
+      "Singing",
+      "Fine Arts",
+      "Quiz Competitions"
+    ],
     "clubs": ["Drama Club", "Music Club", "Literary Club", "Fine Arts Society"]
   },
   "hostel": {
@@ -125,7 +226,12 @@
       "name": "Technova",
       "type": "Annual Tech Fest",
       "month": "March",
-      "activities": ["Coding Competition", "Robotics", "Paper Presentation", "Hackathon"]
+      "activities": [
+        "Coding Competition",
+        "Robotics",
+        "Paper Presentation",
+        "Hackathon"
+      ]
     },
     {
       "name": "Spandan",
@@ -187,8 +293,14 @@
     "office_hours": "9:00 AM - 4:00 PM"
   },
   "achievements": {
-    "academic": ["Consistent university rank holders", "Faculty research publications (national/international journals)"],
-    "extracurricular": ["Winners of Zonal Youth Festival 2022", "Gold medal in State-level Debate Competition"]
+    "academic": [
+      "Consistent university rank holders",
+      "Faculty research publications (national/international journals)"
+    ],
+    "extracurricular": [
+      "Winners of Zonal Youth Festival 2022",
+      "Gold medal in State-level Debate Competition"
+    ]
   },
   "useful_links_and_sources": [
     "https://rksdcollege.ac.in/",
