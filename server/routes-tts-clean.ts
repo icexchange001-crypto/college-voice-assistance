@@ -92,13 +92,13 @@ export const cleanTTSRoute = `
               // Cartesia processing with pronunciation corrections
               const correctedText = applyPronunciationCorrections(chunk);
               const cartesiaVoiceMapping = {
-                "iWNf11sz1GrUE4ppxTOL": "be79f378-47fe-4f9c-b92b-f02cefa62ccf",
+                "iWNf11sz1GrUE4ppxTOL": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3",
               };
-              const cartesiaVoiceId = cartesiaVoiceMapping[voiceId as keyof typeof cartesiaVoiceMapping] || "be79f378-47fe-4f9c-b92b-f02cefa62ccf";
+              const cartesiaVoiceId = cartesiaVoiceMapping[voiceId as keyof typeof cartesiaVoiceMapping] || "fd2ada67-c2d9-4afe-b474-6386b87d8fc3";
               const defaultEmotions = emotions && emotions.length > 0 ? emotions : ["positivity"];
               
               const requestBody = {
-                model_id: cartesiaModelId || "sonic-multilingual",
+                model_id: cartesiaModelId || "sonic-2.0",
                 transcript: correctedText,
                 voice: {
                   mode: "id",
