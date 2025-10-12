@@ -4,10 +4,12 @@ import { storage } from "./storage";
 import { insertChatMessageSchema } from "@shared/schema";
 import { z } from "zod";
 import { applyPronunciationCorrections } from "./pronunciation-corrections";
+import { sessionManager } from "./session-manager";
 
 const askSchema = z.object({
   message: z.string().min(1),
   language: z.string().optional(),
+  sessionId: z.string().optional(),
 });
 
 const ttsSchema = z.object({
@@ -53,9 +55,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Ask AI assistant
   app.post("/api/ask", async (req, res) => {
     try {
-      const { message, language } = askSchema.parse(req.body);
+      const { message, language, sessionId } = askSchema.parse(req.body);
 
-      // Store user message
+      // Get or create session
+      const { sessionId: currentSessionId, session } = sessionManager.getOrCreateSession(sessionId);
+      
+      // Add user message to session
+      sessionManager.addMessage(currentSessionId, 'user', message);
+
+      // Store user message in database
       await storage.createChatMessage({
         content: message,
         role: "user",
@@ -67,33 +75,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const context = collegeData.map(info => `${info.title}: ${info.content}`).join('\n');
 
       // Prepare system prompt
-      const systemPrompt = `You are RK, the official AI Assistant of RKSD College.  
+      const systemPrompt = `You are Ram, the official AI Assistant of RKSD College.  
 Your role is to act like a polite, professional staff member who guides students, parents, and staff naturally in conversation.  
 
 College Information:
 ${context}
 
 Instructions:
-1. Always reply in natural Hinglish (a real mix of Hindi + English, the way people casually speak).  
-2. Speak politely and confidently, like a real staff member of RKSD College.  
-3. Responses should be short, clear, and meaningful — never robotic or confusing.  
-4. Use emojis where helpful (👋, 🎓, 📚, 🚌, 📞, ⏰), but keep them balanced.  
-5. Never repeat the same line in Hindi and English. Choose one language naturally.  
-6. Never use brackets, parentheses, or awkward phrases.  
-7. Always use natural correct words (✅ "mera", "aapka", "tumhara"; ❌ "mujhka", "tumhka").  
-8. Avoid meaningless or robotic lines (❌ "Are you related to college?").  
-9. If the user’s question is unclear, ask a smart follow-up (✅ "Kya aap admission process ke baare me puch rahe ho?").  
-10. If you don’t know something, admit it politely and guide them to the college office or official website.  
+- Always reply in natural Hinglish (a real mix of Hindi + English, the way people casually speak).  
+- Speak politely and confidently, like a real staff member of RKSD College.  
+- Responses should be short, clear, and simple — never robotic or confusing.  
+- NEVER use bullet points (*), asterisks, numbered lists, or heavy formatting in your replies. Keep answers simple and conversational.
+- Use emojis sparingly where helpful (👋, 🎓, 📚, 🚌, 📞, ⏰).  
+- Never repeat the same line in Hindi and English. Choose one language naturally.  
+- Never use brackets, parentheses, or awkward phrases.  
+- Always use natural correct words (✅ "mera", "aapka", "tumhara"; ❌ "mujhka", "tumhka").  
+- Avoid meaningless or robotic lines (❌ "Are you related to college?").  
+- If the user’s question is unclear, ask a smart follow-up (✅ "Kya aap admission process ke baare me puch rahe ho?").  
+- If you don’t know something, admit it politely and guide them to the college office or official website.  
 
 Style Examples:  
 - User: Namaste  
-- RK: Namaste! 👋 Main RK, RKSD College ka assistant hoon. Aap kaise hain?  
+- Ram: Namaste! 👋 Main Ram, RKSD College ka assistant hoon. Aap kaise hain?  
 
 - User: College me bus pass kaha se milega?  
-- RK: Bus pass ke liye aapko transport cell jaana hoga 🚌. Wahan form milega aur ID proof + admit card dena hoga. Form submit karte hi aapko bus pass mil jayega.  
+- Ram: Bus pass ke liye aapko transport cell jaana hoga 🚌. Wahan form milega aur ID proof + admit card dena hoga. Form submit karte hi aapko bus pass mil jayega.  
 
 - User: Aapka naam kya hai?  
-- RK: Mera naam RK hai 🎓. Main RKSD College ka official assistant hoon, jo students aur staff ki madad ke liye banaya gaya hai.`;
+- Ram: Mera naam Ram hai 🎓. Main RKSD College ka official assistant hoon, jo students aur staff ki madad ke liye banaya gaya hai.
+
+- User: Courses konse available hain?
+- Ram: Hamare college me bahut saare courses hain. Arts me BA, MA aur PhD hai. Science me BSc, MSc aur PhD milta hai. Commerce me B.Com aur M.Com hai. Computer Science me BCA aur PGDCA bhi hai. Aapko kis field me interest hai?`;
 
       const groqApiKey = process.env.GROQ_API_KEY;
       if (!groqApiKey) {
@@ -103,6 +115,11 @@ Style Examples:
       let assistantResponse = "Hello! I'm your RKSD Assistant. How can I help you today?";
 
       try {
+        // Get conversation history with context
+        const conversationMessages = sessionManager.getConversationHistory(currentSessionId, systemPrompt);
+        
+        console.log(`Session ${currentSessionId}: Sending ${conversationMessages.length} messages to Groq API`);
+        
         const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -110,10 +127,7 @@ Style Examples:
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: message }
-            ],
+            messages: conversationMessages,
             model: 'llama-3.3-70b-versatile',
             max_tokens: 500,
             temperature: 0.7,
@@ -140,6 +154,9 @@ Style Examples:
         console.warn('Groq API error, using fallback:', apiError);
       }
 
+      // Add assistant response to session memory
+      sessionManager.addMessage(currentSessionId, 'assistant', assistantResponse);
+
       const savedResponse = await storage.createChatMessage({
         content: assistantResponse,
         role: "assistant",
@@ -148,7 +165,8 @@ Style Examples:
 
       res.json({
         response: assistantResponse,
-        messageId: savedResponse.id
+        messageId: savedResponse.id,
+        sessionId: currentSessionId
       });
 
     } catch (error) {
@@ -264,12 +282,12 @@ Style Examples:
         try {
           console.log('TTS: Attempting Cartesia API...');
           const cartesiaVoiceMapping = {
-            "iWNf11sz1GrUE4ppxTOL": "be79f378-47fe-4f9c-b92b-f02cefa62ccf",
+            "iWNf11sz1GrUE4ppxTOL": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3",
           };
-          const cartesiaVoiceId = cartesiaVoiceMapping[voiceId as keyof typeof cartesiaVoiceMapping] || "be79f378-47fe-4f9c-b92b-f02cefa62ccf";
+          const cartesiaVoiceId = cartesiaVoiceMapping[voiceId as keyof typeof cartesiaVoiceMapping] || "fd2ada67-c2d9-4afe-b474-6386b87d8fc3";
           const defaultEmotions = emotions && emotions.length > 0 ? emotions : ["positivity"];
           const cartesiaRequestBody = {
-            model_id: cartesiaModelId || "sonic-multilingual",
+            model_id: cartesiaModelId || "sonic-2.0",
             transcript: limitedText,
             voice: {
               mode: "id",
