@@ -65,7 +65,7 @@ export function useThreeTierTTS(): UseThreeTierTTSReturn {
             similarityBoost: options.similarityBoost || 0.8,
             // Cartesia parameters
             cartesiaModelId: options.cartesiaModelId || "sonic-2",
-            speed: options.speed || "normal",
+            speed: options.speed || "slow", // Slower speed for better clarity and pauses
             emotions: options.emotions,
             language: options.language || "en"
           })
